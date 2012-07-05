@@ -17,6 +17,25 @@ Atwood is well documented and comprehensible.  Conventions are easy to understan
 
 Check out the [QuickStart Guide](QUICKSTART.md)
 
+# Project Status
+
+Atwood is currently **pre-release** and should not be used in production.
+
+## TODO List
+
+ * unit-tests - passing code coverage of /lib
+ * sprites
+	* cli script for generating sprited images
+	* statics end-point for just-in-time sprited images
+ * models
+	* create a base class for models that utilize Stache and MongoConnection classes
+ * backbone.js
+	* get backbone working flawlessly
+ * generators
+	* build a set of cli generators that create MVC templates
+ * video
+	* create a "getting started" video
+
 # Features
 
  * Development
