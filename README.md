@@ -55,3 +55,5 @@ Atwood is currently **pre-release** and should not be used in production.
 # Special Thanks
 
 Thanks to [Jeff Atwood](http://www.codinghorror.com/blog/2012/06/the-php-singularity.html) for the inspiration to create php-atwood.
+
+Thanks to the [Horde Project](http://pear.horde.org/) for a few libraries.
