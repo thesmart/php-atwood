@@ -1,0 +1,11 @@
+/***************************************
+Style CSS for the /tests route
+****************************************/
+
+pre .covered {
+	background-color: #ccffcc;
+}
+
+pre .uncovered {
+	background-color: #ffcccc;
+}

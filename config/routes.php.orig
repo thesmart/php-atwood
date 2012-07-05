@@ -1,0 +1,17 @@
+<?php
+/**
+ * Hook up any routes here
+ * @var \Horde\Routes\Horde_Routes_Mapper $map
+ */
+
+$map->connect('/test/www/:testName', array(
+		'controller'	=> 'WwwTests',
+		'action'		=> 'testLayout'
+	)
+);
+
+$map->connect('/test/:testName', array(
+		'controller'	=> 'UnitTest',
+		'action'		=> 'runTest'
+	)
+);

@@ -1,0 +1,22 @@
+Options -Indexes
+
+AddType application/x-javascript .js
+AddType text/css .css
+
+AddEncoding x-gzip .gz
+
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+    RewriteRule    ^$ public/ [L]
+    RewriteRule    (.*) public/$1 [L]
+</IfModule>
+
+### Environment variables ###
+
+# this is the trigger for "prod" mode
+# the host should be set to your production server domain
+SetEnvIfNoCase Host php-atwood\.com conf=prod mode=prod
+
+# this is the trigger for "dev" mode.
+# Change the "conf" value from dev to the name of your config file
+SetEnvIfNoCase Host dev\.vm conf=dev mode=dev

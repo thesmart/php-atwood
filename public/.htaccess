@@ -1,0 +1,20 @@
+Options -Indexes
+
+AddType application/x-javascript .js
+AddType text/css .css
+
+AddEncoding x-gzip .gz
+
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+
+	RewriteCond %{HTTP_HOST} ^www.example.com [NC]
+	RewriteRule ^(.*)$ http://example.com/$1 [L,R=301]
+
+	RewriteRule ^cloudfront[0-9a-zA-Z]*/(.*)$ /$1 [L]
+
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !favicon.ico$
+	RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+</IfModule>
