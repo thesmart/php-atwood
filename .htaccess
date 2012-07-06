@@ -7,8 +7,13 @@ AddEncoding x-gzip .gz
 
 <IfModule mod_rewrite.c>
 	RewriteEngine On
-    RewriteRule    ^$ public/ [L]
-    RewriteRule    (.*) public/$1 [L]
+
+	# For SEO, transform any www. links to a link without www.
+	RewriteCond %{HTTP_HOST}		^(www)\.(.+)$ [NC]
+	RewriteRule ^(.*)$				http://%2 [L,R=301]
+
+	RewriteRule ^$ public/ [L]
+	RewriteRule (.*) public/$1 [L]
 </IfModule>
 
 ### Environment variables ###
