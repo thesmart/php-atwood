@@ -1,14 +1,14 @@
 <?php
 
-namespace Smart\tests\lib\fx;
+namespace Atwood\tests\lib\fx;
 
-use \Smart\lib\fx\exception\ApiException;
-use \Smart\lib\fx\Env;
+use \Atwood\lib\fx\exception\ApiException;
+use \Atwood\lib\fx\Env;
 
-class EnvTest extends \Smart\lib\test\AtwoodTest {
+class EnvTest extends \Atwood\lib\test\AtwoodTest {
 
 	/**
-	 * @var \Smart\lib\fx\Env
+	 * @var \Atwood\lib\fx\Env
 	 */
 	private $env = null;
 

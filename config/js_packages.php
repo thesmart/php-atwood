@@ -6,7 +6,7 @@
  * one per package.
  */
 
-Use \Smart\lib\fx\statics\JsStatics;
+Use \Atwood\lib\fx\statics\JsStatics;
 
 const JS_BASE = 'base';
 const JS_TEST = 'test';

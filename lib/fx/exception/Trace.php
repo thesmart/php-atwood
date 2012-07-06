@@ -1,5 +1,5 @@
 <?php
-namespace Smart\lib\fx\exception;
+namespace Atwood\lib\fx\exception;
 
 class Trace {
 	protected $path;

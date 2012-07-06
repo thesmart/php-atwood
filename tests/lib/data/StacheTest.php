@@ -1,12 +1,12 @@
 <?php
 
-namespace Smart\tests\lib\data;
+namespace Atwood\tests\lib\data;
 
-use \Smart\lib\data\Stache;
-use \Smart\lib\fx\exception\ApiException;
-use \Smart\lib\fx\Env;
+use \Atwood\lib\data\Stache;
+use \Atwood\lib\fx\exception\ApiException;
+use \Atwood\lib\fx\Env;
 
-class StacheTest extends \Smart\lib\test\AtwoodTest {
+class StacheTest extends \Atwood\lib\test\AtwoodTest {
 
 	public function testBootstrap() {
 		$this->assertTrue(Stache::hasInstance(), 'Stache instance not set during bootstrap');

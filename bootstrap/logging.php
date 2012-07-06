@@ -3,7 +3,7 @@
  * Setup logging infrastructure
  */
 
-use \Smart\lib\fx\Env;
+use \Atwood\lib\fx\Env;
 use Monolog\Logger;
 use Monolog\Handler\PhpErrorLogHandler;
 use Monolog\Handler\StreamHandler;

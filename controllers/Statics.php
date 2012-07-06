@@ -1,29 +1,29 @@
 <?php
 
-namespace Smart\controllers;
+namespace Atwood\controllers;
 
-use \Smart\lib\fx\HttpRequest;
-use \Smart\lib\fx\HttpResponse;
-use \Smart\lib\fx\exception\ApiException;
+use \Atwood\lib\fx\HttpRequest;
+use \Atwood\lib\fx\HttpResponse;
+use \Atwood\lib\fx\exception\ApiException;
 use \Monolog\Logger;
-use \Smart\lib\fx\Env;
-use \Smart\lib\fx\filesys\FileChange;
+use \Atwood\lib\fx\Env;
+use \Atwood\lib\fx\filesys\FileChange;
 use \Less\lessc;
 
 /**
  * Serves dynamically generated static files
  */
-class Statics extends \Smart\lib\fx\controllers\Controller {
+class Statics extends \Atwood\lib\fx\controllers\Controller {
 
 	const TIMEOUT = 60; // 1 min
 
 	/**
-	 * @var \Smart\lib\fx\HttpRequest
+	 * @var \Atwood\lib\fx\HttpRequest
 	 */
 	public $request;
 
 	/**
-	 * @var \Smart\lib\fx\HttpResponse
+	 * @var \Atwood\lib\fx\HttpResponse
 	 */
 	public $response;
 
@@ -46,7 +46,7 @@ class Statics extends \Smart\lib\fx\controllers\Controller {
 	 * @param $srcExtension
 	 * @param $targetExtension
 	 * @return string
-	 * @throws \Smart\lib\fx\exception\ApiException
+	 * @throws \Atwood\lib\fx\exception\ApiException
 	 */
 	private function handleFilePath($srcExtension, $targetExtension) {
 		if (preg_match(sprintf('/^[a-zA-Z0-9_\-]+\.%s$/', $targetExtension), $this->data['fileName']) === 0) {

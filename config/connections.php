@@ -3,11 +3,11 @@
  * This script manages persistent database connections.
  */
 
-namespace Smart\connections;
+namespace Atwood\connections;
 
-use \Smart\lib\fx\Env;
-use \Smart\lib\data\MongoConnections;
-use \Smart\lib\data\Stache;
+use \Atwood\lib\fx\Env;
+use \Atwood\lib\data\MongoConnections;
+use \Atwood\lib\data\Stache;
 
 ini_set('mongo.cmd', ':');
 foreach (Env::get('mongo') as $attributes) {

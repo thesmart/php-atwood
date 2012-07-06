@@ -3,7 +3,7 @@
  * Support for url construction, mutation, and output depending on content type.
  */
 
-namespace Smart\lib;
+namespace Atwood\lib;
 
 class Url {
 

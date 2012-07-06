@@ -1,10 +1,10 @@
 <?php
-namespace Smart\lib\fx;
+namespace Atwood\lib\fx;
 
 /**
  * Handles configuration switching
  */
-class Env extends \Smart\lib\oop\Singleton {
+class Env extends \Atwood\lib\oop\Singleton {
 
 	/**
 	 * The name of this Env instance

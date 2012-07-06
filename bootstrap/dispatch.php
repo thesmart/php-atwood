@@ -5,12 +5,12 @@
  * @var \Monolog\Logger $log
  */
 
-use \Smart\lib\Url;
-use \Smart\lib\fx\Env;
-use \Smart\lib\fx\controllers\Controller;
-use \Smart\lib\fx\HttpRequest;
-use \Smart\lib\fx\HttpResponse;
-use \Smart\lib\fx\exception\ApiException;
+use \Atwood\lib\Url;
+use \Atwood\lib\fx\Env;
+use \Atwood\lib\fx\controllers\Controller;
+use \Atwood\lib\fx\HttpRequest;
+use \Atwood\lib\fx\HttpResponse;
+use \Atwood\lib\fx\exception\ApiException;
 
 // handle request
 $request	= new HttpRequest($_SERVER);
@@ -28,7 +28,7 @@ if (is_null($route)) {
 $controllerName		= $route['controller'];
 $controllerName		= preg_replace('/\//', '\\', $controllerName);
 $controllerName		= preg_replace('/\./', '', $controllerName);
-$controllerName		= "Smart\\controllers\\{$controllerName}";
+$controllerName		= "Atwood\\controllers\\{$controllerName}";
 $actionName			= 'action_' . $route['action'];
 
 if (isset($_GET['testRoute']) && Env::mode('dev')) {
@@ -47,14 +47,14 @@ if (!$classExists) {
 
 // security check on type Controller
 $controllerRef		= new \ReflectionClass($controllerName);
-if (!$controllerRef->isSubclassOf('\\Smart\\lib\fx\\controllers\\Controller')) {
+if (!$controllerRef->isSubclassOf('\\Atwood\\lib\fx\\controllers\\Controller')) {
 	$log->crit(sprintf('Path "%s" specifies class "%s", does not extend Controller.', $request->url->pathRelative(), $controllerName));
 	$response->setStatus(404);
 	$response->echoHeaders();
 	exit;
 }
 
-/** @var \Smart\lib\fx\controllers\Controller $controller */
+/** @var \Atwood\lib\fx\controllers\Controller $controller */
 $controller			= $controllerRef->newInstance($route, $request, $response);
 $controller->setData($route);
 

@@ -3,7 +3,7 @@
  * @var callback $h			Short-cut for htmlspecialchars()
  * @var callback $el		Function for rendering an element from the /views/elements folder
  * @var string $suiteName
- * @var \Smart\lib\test\CodeCoverage $codeCoverage
+ * @var \Atwood\lib\test\CodeCoverage $codeCoverage
  */
 
 $percentage	= $codeCoverage->percentCovered();

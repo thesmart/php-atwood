@@ -3,8 +3,8 @@
  * The bootstrap file, for CLI scripts
  */
 
-use \Smart\lib\Url;
-use \Smart\lib\fx\Env;
+use \Atwood\lib\Url;
+use \Atwood\lib\fx\Env;
 use \Horde\Routes\Horde_Routes_Mapper;
 
 global $SCRIPT_START_TIME;

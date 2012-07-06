@@ -14,8 +14,8 @@
  * @var array $libs
  */
 
-use \Smart\lib\fx\statics\JsStatics;
-use \Smart\lib\fx\statics\CssStatics;
+use \Atwood\lib\fx\statics\JsStatics;
+use \Atwood\lib\fx\statics\CssStatics;
 
 global $SCRIPT_START_TIME;
 

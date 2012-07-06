@@ -1,9 +1,9 @@
 <?php
-namespace Smart\lib\test;
+namespace Atwood\lib\test;
 
-use Smart\lib\data\MongoConnections;
-use \Smart\lib\fx\Env;
-use \Smart\lib\data\Stache;
+use Atwood\lib\data\MongoConnections;
+use \Atwood\lib\fx\Env;
+use \Atwood\lib\data\Stache;
 
 
 /**

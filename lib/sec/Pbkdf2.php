@@ -1,6 +1,6 @@
 <?php
 
-namespace Smart\lib\sec;
+namespace Atwood\lib\sec;
 
 /**
  * A class used to strengthen passwords against brute force attack.  This method is approved by the RSA as published in

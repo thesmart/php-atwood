@@ -1,17 +1,17 @@
 <?php
 
-namespace Smart\controllers;
+namespace Atwood\controllers;
 
 use \Monolog\Logger;
-use \Smart\lib\fx\Env;
-use \Smart\lib\test\CodeCoverage;
-use \Smart\lib\fx\statics\JsStatics;
-use \Smart\lib\fx\statics\CssStatics;
+use \Atwood\lib\fx\Env;
+use \Atwood\lib\test\CodeCoverage;
+use \Atwood\lib\fx\statics\JsStatics;
+use \Atwood\lib\fx\statics\CssStatics;
 
 /**
  * Runs unit tests
  */
-class UnitTest extends \Smart\lib\fx\controllers\HtmlController {
+class UnitTest extends \Atwood\lib\fx\controllers\HtmlController {
 
 	public function setUp() {
 		$this->layout	= 'tests';
@@ -99,7 +99,7 @@ class UnitTest extends \Smart\lib\fx\controllers\HtmlController {
 		}
 		$filePath	= PATH_TESTS . implode('/', $unitTest) . '.php';
 		$shortName	= implode('\\', $unitTest);
-		$unitTest	= '\\Smart\\tests\\' . $shortName;
+		$unitTest	= '\\Atwood\\tests\\' . $shortName;
 
 		// load the test class
 		if (!@file_exists($filePath)) {
@@ -110,7 +110,7 @@ class UnitTest extends \Smart\lib\fx\controllers\HtmlController {
 		$class	= new \ReflectionClass($unitTest);
 
 		// detect if class is a valid test
-		if (!$class->isSubclassOf('\\Smart\\lib\\test\\AtwoodTest')) {
+		if (!$class->isSubclassOf('\\Atwood\\lib\\test\\AtwoodTest')) {
 			$this->viewFile	= 'unknownTest';
 			return;
 		}

@@ -1,10 +1,10 @@
 <?php
 
-namespace Smart\tests\lib\oop;
+namespace Atwood\tests\lib\oop;
 
-use \Smart\lib\oop\Singleton;
+use \Atwood\lib\oop\Singleton;
 
-class SingletonTest extends \Smart\lib\test\AtwoodTest {
+class SingletonTest extends \Atwood\lib\test\AtwoodTest {
 
 	public function testBasics() {
 		$obj = SingletonMock::getInstance();

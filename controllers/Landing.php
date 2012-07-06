@@ -1,17 +1,17 @@
 <?php
 
-namespace Smart\controllers;
+namespace Atwood\controllers;
 
-use \Smart\lib\fx\HttpRequest;
-use \Smart\lib\fx\HttpResponse;
-use \Smart\lib\fx\exception\ApiException;
+use \Atwood\lib\fx\HttpRequest;
+use \Atwood\lib\fx\HttpResponse;
+use \Atwood\lib\fx\exception\ApiException;
 use \Monolog\Logger;
 use \Less\lessc;
 
 /**
  * Landing pages for users.
  */
-class Landing extends \Smart\lib\fx\controllers\HtmlController {
+class Landing extends \Atwood\lib\fx\controllers\HtmlController {
 
 	public $layout = 'default';
 

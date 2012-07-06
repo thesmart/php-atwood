@@ -1,16 +1,16 @@
 <?php
 
-namespace Smart\tests\lib\fx;
+namespace Atwood\tests\lib\fx;
 
-use \Smart\lib\fx\exception\ApiException;
+use \Atwood\lib\fx\exception\ApiException;
 
 /**
  * This is a test that is generally ignored except that it provides examples for what different test results will look
  * like in the Test Sweet
- * @throws \Exception|\Smart\lib\fx\exception\ApiException
+ * @throws \Exception|\Atwood\lib\fx\exception\ApiException
  *
  */
-class ExampleTest extends \Smart\lib\test\AtwoodTest {
+class ExampleTest extends \Atwood\lib\test\AtwoodTest {
 
 	public function testSuccess() {
 		$this->assertTrue(true);
@@ -41,7 +41,7 @@ class ExampleTest extends \Smart\lib\test\AtwoodTest {
 	}
 
 	public function testExpectedException() {
-		$this->setExpectedException('\\Smart\\lib\\fx\\exception\\ApiException', 'throw me under');
+		$this->setExpectedException('\\Atwood\\lib\\fx\\exception\\ApiException', 'throw me under');
 		throw new ApiException('throw me under', 500);
 	}
 }

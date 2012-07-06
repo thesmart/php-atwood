@@ -1,6 +1,6 @@
 <?php
 
-use \Smart\lib\fx\Env;
+use \Atwood\lib\fx\Env;
 use \Monolog\Logger;
 
 Env::setInstance(new Env('dev', array(

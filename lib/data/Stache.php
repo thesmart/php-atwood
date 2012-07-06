@@ -1,15 +1,15 @@
 <?php
-namespace Smart\lib\data;
+namespace Atwood\lib\data;
 
-use \Smart\lib\fx\Env;
+use \Atwood\lib\fx\Env;
 
 /**
  * Stache is a handle-bar mustache for Cache.
  * This library uses local PHP memory as a temporary cache.  This is faster than performing redundant DB look-ups.
- * @method static \Smart\lib\data\Stache getInstance($name = null)
- * @method static array.<\Smart\lib\data\Stache> getAllInstances()
+ * @method static \Atwood\lib\data\Stache getInstance($name = null)
+ * @method static array.<\Atwood\lib\data\Stache> getAllInstances()
  */
-class Stache extends \Smart\lib\oop\Singleton {
+class Stache extends \Atwood\lib\oop\Singleton {
 
 	/**
 	 * The write-back static cache

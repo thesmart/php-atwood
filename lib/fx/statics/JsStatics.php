@@ -1,6 +1,6 @@
 <?php
 
-namespace Smart\lib\fx\statics;
+namespace Atwood\lib\fx\statics;
 
 /**
  * A class tracking Javascript dependencies and rendering that markup

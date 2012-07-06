@@ -4,7 +4,7 @@
  * @var \Horde\Routes\Horde_Routes_Mapper $map
  */
 
-use \Smart\lib\fx\Env;
+use \Atwood\lib\fx\Env;
 
 $map->connect('/', array(
 	'controller'	=> 'Landing',

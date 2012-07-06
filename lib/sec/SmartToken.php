@@ -1,7 +1,7 @@
 <?php
-namespace Smart\lib\sec;
+namespace Atwood\lib\sec;
 
-use \Smart\lib\sec\Pbkdf2;
+use \Atwood\lib\sec\Pbkdf2;
 
 /**
  * A class the signs arbitrary data securely, and in a nicely URL-transparent way.

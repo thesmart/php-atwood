@@ -2,7 +2,7 @@
 /**
  * @var callback $h			Short-cut for htmlspecialchars()
  * @var callback $el		Function for rendering an element from the /views/elements folder
- * @var Smart\lib\fx\exception\Trace $trace
+ * @var Atwood\lib\fx\exception\Trace $trace
  * @var \PHPUnit_Framework_TestFailure $error
  */
 

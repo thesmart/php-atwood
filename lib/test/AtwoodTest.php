@@ -1,10 +1,10 @@
 <?php
 
-namespace Smart\lib\test;
+namespace Atwood\lib\test;
 
-use \Smart\lib\fx\Env;
-use Smart\lib\data\MongoConnections;
-use Smart\lib\test\Truncate;
+use \Atwood\lib\fx\Env;
+use Atwood\lib\data\MongoConnections;
+use Atwood\lib\test\Truncate;
 
 /**
  * Base class for tests in the Atwood project tests folder

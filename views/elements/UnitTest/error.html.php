@@ -6,11 +6,11 @@
  * @var \PHPUnit_Framework_TestFailure $error
  */
 
-/** @var \Smart\lib\test\AtwoodTest $test  */
+/** @var \Atwood\lib\test\AtwoodTest $test  */
 $test	= $error->failedTest();
 $ex		= $error->thrownException();
 
-use \Smart\lib\fx\exception\Trace;
+use \Atwood\lib\fx\exception\Trace;
 $trace	= new Trace($ex, $suiteName);
 
 $accordion	= $el('bootstrap/accordion', array(

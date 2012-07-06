@@ -3,7 +3,7 @@
  * This script checks to see that all required settings are correct in order to properly run php-atwood
  */
 
-namespace Smart\bootstrap;
+namespace Atwood\bootstrap;
 
 /**
  * Used to denote requirements failures

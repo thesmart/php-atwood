@@ -1,6 +1,6 @@
 <?php
 
-namespace Smart\lib\test;
+namespace Atwood\lib\test;
 
 /**
  * Utility class for analysing code coverage of a unit test

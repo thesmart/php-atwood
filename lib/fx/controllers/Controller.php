@@ -1,5 +1,5 @@
 <?php
-namespace Smart\lib\fx\controllers;
+namespace Atwood\lib\fx\controllers;
 
 use Monolog\Logger;
 

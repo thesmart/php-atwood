@@ -1,10 +1,10 @@
 <?php
 
-namespace Smart\tests\lib\fx\controllers;
+namespace Atwood\tests\lib\fx\controllers;
 
-use \Smart\lib\fx\controllers\Controller;
+use \Atwood\lib\fx\controllers\Controller;
 
-class ControllerTest extends \Smart\lib\test\AtwoodTest {
+class ControllerTest extends \Atwood\lib\test\AtwoodTest {
 
 	public function testData() {
 		$c = new MockController(array());
@@ -25,7 +25,7 @@ class ControllerTest extends \Smart\lib\test\AtwoodTest {
 
 	public function testLog() {
 		$c = new MockController(array());
-		$this->assertEquals('Smart\\tests\\lib\\fx\\controllers\\MockController', $c->log->getName());
+		$this->assertEquals('Atwood\\tests\\lib\\fx\\controllers\\MockController', $c->log->getName());
 	}
 }
 

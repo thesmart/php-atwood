@@ -6,7 +6,7 @@
  */
 
 require_once PATH_ROOT . 'lib/fx/Env.php';
-use \Smart\lib\fx\Env;
+use \Atwood\lib\fx\Env;
 
 // load a configuration set
 $configToSet	= isset($_SERVER['conf']) ? $_SERVER['conf'] : 'prod';

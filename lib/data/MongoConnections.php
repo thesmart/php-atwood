@@ -1,7 +1,7 @@
 <?php
-namespace Smart\lib\data;
+namespace Atwood\lib\data;
 
-use \Smart\lib\fx\Env;
+use \Atwood\lib\fx\Env;
 
 /**
  * Creates and manages persistent connections to MongoDB. This enables optimal connections depending on a mix of

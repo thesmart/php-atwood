@@ -1,7 +1,7 @@
 <?php
-namespace Smart\lib\fx\filesys;
+namespace Atwood\lib\fx\filesys;
 
-use \Smart\lib\fx\Env;
+use \Atwood\lib\fx\Env;
 
 /**
  * A class that aids with detecting file changes in a folder.

@@ -4,8 +4,8 @@
  */
 
 use \Horde\Routes\Horde_Routes_Mapper;
-use \Smart\lib\Url;
-use Smart\lib\fx\Env;
+use \Atwood\lib\Url;
+use Atwood\lib\fx\Env;
 
 // set default url parameters
 Url::$DEFAULT_SCHEME	= Env::get('url.scheme');

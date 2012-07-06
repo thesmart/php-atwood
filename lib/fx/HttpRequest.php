@@ -1,7 +1,7 @@
 <?php
-namespace Smart\lib\fx;
+namespace Atwood\lib\fx;
 
-use \Smart\lib\Url;
+use \Atwood\lib\Url;
 
 /**
  * Encapsulates the request from the web-client
@@ -25,7 +25,7 @@ class HttpRequest {
 	public $ip;
 
 	/**
-	 * @var \Smart\lib\Url
+	 * @var \Atwood\lib\Url
 	 */
 	public $url;
 

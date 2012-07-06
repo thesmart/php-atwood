@@ -1,7 +1,7 @@
 <?php
 
 // COMMENTED OUT UNTIL LAUNCH
-//use \Smart\lib\fx\Env;
+//use \Atwood\lib\fx\Env;
 //use \Monolog\Logger;
 //
 //Env::setInstance(new Env('prod', array(

@@ -10,7 +10,7 @@
  * @var array $notImplemented
  * @var array $errors
  * @var array $failures
- * @var \Smart\lib\test\CodeCoverage $codeCoverage
+ * @var \Atwood\lib\test\CodeCoverage $codeCoverage
  */
 
 $summaryHtml	= $el('UnitTest/summary', array(
@@ -52,7 +52,7 @@ foreach ($failures as /** @var \PHPUnit_Framework_TestFailure $fail */ $fail) {
 
 <!--SKIPPED TESTS-->
 <? foreach ($skipped as /** @var \PHPUnit_Framework_TestFailure $fail */ $fail) {
-	/** @var \Smart\lib\test\AtwoodTest $test  */
+	/** @var \Atwood\lib\test\AtwoodTest $test  */
 	$test	= $fail->failedTest();
 ?>
 	<?=$el('bootstrap/alert', array('hn' => "SKIPPED - {$test->getName(false)}", 'body' => $fail->exceptionMessage(), 'level' => 'warn'))?>
@@ -60,7 +60,7 @@ foreach ($failures as /** @var \PHPUnit_Framework_TestFailure $fail */ $fail) {
 
 <!--NOT IMPLEMENTED TESTS-->
 <? foreach ($notImplemented as /** @var \PHPUnit_Framework_TestFailure $fail */ $fail) {
-	/** @var \Smart\lib\test\AtwoodTest $test  */
+	/** @var \Atwood\lib\test\AtwoodTest $test  */
 	$test	= $fail->failedTest();
 ?>
 	<?=$el('bootstrap/alert', array('hn' => "NOT IMPLEMENTED - {$test->getName(false)}", 'body' => $fail->exceptionMessage(), 'level' => 'inverse'))?>

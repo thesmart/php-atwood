@@ -1,20 +1,19 @@
 <?php
-namespace Smart\lib\fx\controllers;
+namespace Atwood\lib\fx\controllers;
 
-use \Smart\lib\fx\HttpRequest;
-use \Smart\lib\fx\HttpResponse;
-use \Smart\lib\fx\controllers\Controller;
-use \Smart\lib\fx\Js;
+use \Atwood\lib\fx\HttpRequest;
+use \Atwood\lib\fx\HttpResponse;
+use \Atwood\lib\fx\controllers\Controller;
 
 class HtmlController extends Controller {
 
 	/**
-	 * @var \Smart\lib\fx\HttpRequest
+	 * @var \Atwood\lib\fx\HttpRequest
 	 */
 	public $request;
 
 	/**
-	 * @var \Smart\lib\fx\HttpResponse
+	 * @var \Atwood\lib\fx\HttpResponse
 	 */
 	public $response;
 

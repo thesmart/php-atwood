@@ -6,7 +6,7 @@
  * one per package.
  */
 
-Use \Smart\lib\fx\statics\CssStatics;
+Use \Atwood\lib\fx\statics\CssStatics;
 
 const CSS_BASE = 'base';
 const CSS_TEST = 'test';

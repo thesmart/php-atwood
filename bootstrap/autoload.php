@@ -7,7 +7,7 @@ spl_autoload_register(function($class) {
 	$class		= preg_replace('/\\\\/', '/', $class);
 	$path		= PATH_ROOT . $class . '.php';
 
-	if (strstr($class, 'Smart') !== false) {
+	if (strstr($class, 'Atwood') !== false) {
 		$classPath	= explode('/', $class);
 		array_shift($classPath);
 		$classPath	= implode('/', $classPath);

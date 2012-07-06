@@ -1,12 +1,12 @@
 <?php
-namespace Smart\lib\fx;
+namespace Atwood\lib\fx;
 
-use \Smart\lib\fx\controllers\Controller;
+use \Atwood\lib\fx\controllers\Controller;
 
 class ApiController extends Controller {
 
 	/**
-	 * @var \Smart\lib\fx\HttpResponse
+	 * @var \Atwood\lib\fx\HttpResponse
 	 */
 	public $response;
 

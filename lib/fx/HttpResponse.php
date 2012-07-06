@@ -1,7 +1,7 @@
 <?php
-namespace Smart\lib\fx;
+namespace Atwood\lib\fx;
 
-use \Smart\lib\Url;
+use \Atwood\lib\Url;
 
 /**
  * Encapsulates the response to the web-client

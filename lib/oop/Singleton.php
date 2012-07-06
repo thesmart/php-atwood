@@ -1,6 +1,6 @@
 <?php
 
-namespace Smart\lib\oop;
+namespace Atwood\lib\oop;
 
 abstract class Singleton {
 

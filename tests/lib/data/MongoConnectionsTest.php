@@ -1,11 +1,11 @@
 <?php
 
-namespace Smart\tests\lib\data;
+namespace Atwood\tests\lib\data;
 
-use Smart\lib\data\MongoConnections;
-use \Smart\lib\fx\Env;
+use Atwood\lib\data\MongoConnections;
+use \Atwood\lib\fx\Env;
 
-class MongoConnectionsTest extends \Smart\lib\test\AtwoodTest {
+class MongoConnectionsTest extends \Atwood\lib\test\AtwoodTest {
 
 	public function testConnect() {
 		$connections	= Env::get('mongo');
