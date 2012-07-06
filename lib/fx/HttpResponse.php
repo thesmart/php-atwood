@@ -69,19 +69,14 @@ class HttpResponse {
 		205=>'205 Reset Content',
 		206=>'206 Partial Content',
 		// [Redirection 3xx]
-		300=>'300 Multiple Choices',
-		// don't use
-		301=>'301 Moved Permanently',
-		// don't use
-		302=>'302 Found',
-		// indicates that the correct response can be found under a different URI and should be
-		// retrieved using a GET method. The specified URI is not a substitute reference for the original resource.
-		303=>'303 See Other',
+		300=>'300 Multiple Choices', // don't use
+		301=>'301 Moved Permanently', // tells Google to use the new URL permanently, as in FOREVER
+		302=>'302 Found', // don't use
+		303=>'303 See Other', // temporary redirect using a GET method. useful for when redirecting from a POST, like credit card forms
 		304=>'304 Not Modified',
 		305=>'305 Use Proxy',
 		306=>'306 (Unused)',
-		// the request should be repeated with another URI, but future requests can still use the original URI
-		307=>'307 Temporary Redirect',
+		307=>'307 Temporary Redirect', // temporary redirect, reuses the same method, may ask the user if they want to resubmit
 		// [Client Error 4xx]
 		400=>'400 Bad Request',
 		401=>'401 Unauthorized',
@@ -216,11 +211,16 @@ class HttpResponse {
 	/**
 	 * Set the response for a redirect
 	 *
+	 * NOTE: different redirect type matter!
+	 * 		301 - tells Google to use the new URL permanently, as in FOREVER
+	 * 		303 - temporary redirect using a GET method. useful for when redirecting from a POST, like credit card forms
+	 * 		307 - temporary redirect, reuses the same method, may ask the user if they want to resubmit
+	 *
 	 * @param string $url		The valid url to redirect to
-	 * @param int $code			Optional. Use 307 or 303 depending on if the redirect is permanent or not
+	 * @param int $code			Optional. Default: 303. See NOTE in this method's documentation
 	 * @return void
 	 */
-	public function setRedirect($url, $code = 307) {
+	public function setRedirect($url, $code = 303) {
 		$this->setStatus($code);
 		$this->headers['Location']	= trim($url);
 	}

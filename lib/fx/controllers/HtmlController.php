@@ -5,20 +5,25 @@ use \Atwood\lib\fx\HttpRequest;
 use \Atwood\lib\fx\HttpResponse;
 use \Atwood\lib\fx\controllers\Controller;
 
+/**
+ * A controller that handles web-browser requests for HTML5 responses
+ */
 class HtmlController extends Controller {
 
 	/**
+	 * The request sent by the client
 	 * @var \Atwood\lib\fx\HttpRequest
 	 */
 	public $request;
 
 	/**
+	 * The response to return to the client at the end of the current request process
 	 * @var \Atwood\lib\fx\HttpResponse
 	 */
 	public $response;
 
 	/**
-	 * The layout file to use
+	 * The layout file to use, see the /views/layouts folder
 	 * @var string
 	 */
 	public $layout = 'blank';
@@ -87,6 +92,6 @@ class HtmlController extends Controller {
 
 		ob_start();
 		require PATH_LAYOUT . "{$this->layout}.html.php";
-		return ob_get_clean();
+		return trim(ob_get_clean());
 	}
 }
