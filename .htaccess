@@ -12,8 +12,12 @@ AddEncoding x-gzip .gz
 	RewriteCond %{HTTP_HOST}		^(www)\.(.+)$ [NC]
 	RewriteRule ^(.*)$				http://%2 [L,R=301]
 
+	# Force site to be HTTPS only (Atwood supports this)
+#	RewriteCond %{HTTPS} !=on
+#	RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
 	RewriteRule ^$ public/ [L]
-	RewriteRule (.*) public/$1 [L]
+	RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
 
 ### Environment variables ###
