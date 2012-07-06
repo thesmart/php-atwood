@@ -2,9 +2,9 @@
 /**
  * @var callback $h			Short-cut for htmlspecialchars()
  * @var string $hn		The h1, h2, or whatever hn tag
- * @var string $body
- * @var string $enableClose
- * @var string $level		error, success, info
+ * @var string $body		Optional.
+ * @var string $enableClose Optional.
+ * @var string $level		Optional. error, success, info
  */
 
 $level	= isset($level) ? ' alert-'.$level : ' alert-error';

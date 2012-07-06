@@ -8,6 +8,8 @@ use Atwood\lib\test\Truncate;
 
 /**
  * Base class for tests in the Atwood project tests folder
+ *
+ * NOTE: PHPUnit swallows all output that is emitted during the execution of a test.
  */
 abstract class AtwoodTest extends \PHPUnit_Framework_TestCase {
 
@@ -16,8 +18,8 @@ abstract class AtwoodTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function setUp() {
-		// setup namespace
-		MongoConnections::setNamespace('test');
+		// setup namespace for testing against database
+		MongoConnections::setNamespace('test'); // IMPORTANT!
 
 		// save current env
 		Env::setInstance(Env::getInstance(), 'backup');
