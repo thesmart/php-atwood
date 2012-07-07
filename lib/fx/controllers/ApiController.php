@@ -32,6 +32,11 @@ class ApiController extends Controller {
 	 * @return string				the json
 	 */
 	public function render(array $route) {
+		if ($this->response->isRedirected()) {
+			// do not render if redirected
+			return '';
+		}
+
 		return json_encode($this->getData());
 	}
 }

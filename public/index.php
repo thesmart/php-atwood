@@ -33,7 +33,10 @@ function main() {
 
 	// Setup the environment configuration
 	require_once PATH_BOOT . 'environment.php';
+
 	Env::set('runtime', 'http');
+	Url::$DEFAULT_SCHEME	= Env::get('url.scheme');
+	Url::$DEFAULT_DOMAIN	= Env::get('url.domain');
 
 	if (Env::mode('dev')) {
 		// check environment requirements, but only in dev mode
@@ -43,14 +46,14 @@ function main() {
 	// Setup any logging tools
 	require_once PATH_BOOT . 'logging.php';
 
-	// Route the request
-	require_once PATH_BOOT . 'routing.php';
-
 	// Static packages
 	require_once PATH_BOOT . 'statics.php';
 
 	// Setup any logging tools
 	require_once PATH_CONFIG . 'connections.php';
+
+	// Setup routes, mapping them to the controllers
+	require_once PATH_CONFIG . 'routes.php';
 
 	// Dispatch the instruction
 	require_once PATH_BOOT . 'dispatch.php';

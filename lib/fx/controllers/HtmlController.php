@@ -13,17 +13,38 @@ class HtmlController extends HttpController {
 	 * The layout file to use, see the /views/layouts folder
 	 * @var string
 	 */
-	public $layout = 'blank';
+	private $layout = 'blank';
 
 	/**
 	 * Path to the action view file to render, relative to the /views/actions folder
 	 * @var string
 	 */
-	public $viewPath = null;
+	private $viewPath = null;
+
+	/**
+	 * The id to set the body tag's id attribute
+	 * @var string
+	 */
+	private $bodyId;
+
+	/**
+	 * Classes to append to the body tag's class attribute
+	 * @var array
+	 */
+	private $bodyClasses	= array();
 
 	public function __construct(HttpRequest $request, HttpResponse $response) {
 		parent::__construct($request, $response);
 		$this->response->setContentType('html');
+		$this->bodyId	= $this->name;
+	}
+
+	/**
+	 * Set the Html layout template to load at render()
+	 * @param $layout
+	 */
+	public function setLayout($layout) {
+		$this->layout	= $layout;
 	}
 
 	/**
@@ -32,6 +53,10 @@ class HtmlController extends HttpController {
 	 */
 	public function setView($viewPath) {
 		$viewPath	= preg_replace('/action_/', '', $viewPath);
+		$viewPath	= trim($viewPath, '/');
+
+		$this->bodyClasses['view']	= $viewPath;
+
 		if (stripos($viewPath, '/') > 0) {
 			$this->viewPath	= $viewPath;
 		} else {
@@ -40,11 +65,26 @@ class HtmlController extends HttpController {
 	}
 
 	/**
+	 * Add a class to the body tag that would be rendered by this HtmlController
+	 * @param $class
+	 */
+	public function addClass($class) {
+		$this->bodyClasses[]	= $class;
+	}
+
+	/**
 	 * Render html from the views folder
 	 * @return string			The html
 	 */
 	public function render() {
+		if ($this->response->isRedirected()) {
+			// do not render if redirected
+			return '';
+		}
+
 		extract($this->data);
+		$bodyId		= $this->bodyId;
+		$bodyClass	= implode(' ', $this->bodyClasses);
 
 		/**
 		 * Helper for htmlspecialchars

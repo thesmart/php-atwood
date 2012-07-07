@@ -1,107 +1,37 @@
 <?php
 /**
  * Dispatch the request by constructing a Controller and invoking its Action
- * @var \Horde\Routes\Horde_Routes_Mapper $map
+ * @var \Atwood\lib\Atwood $atWood
  * @var \Monolog\Logger $log
  */
 
 use \Atwood\lib\Url;
 use \Atwood\lib\fx\Env;
-use \Atwood\lib\fx\controllers\Controller;
-use Atwood\lib\fx\controllers\HtmlController;
-use \Atwood\lib\fx\HttpRequest;
 use \Atwood\lib\fx\HttpResponse;
 use \Atwood\lib\fx\exception\ApiException;
 
-// handle request
-$request	= new HttpRequest($_SERVER);
-$response	= new HttpResponse();
-
-// handle route
-$route	= $map->match($request->url->pathRelative());
-if (is_null($route)) {
-	$log->debug(sprintf('Path "%s" does not match any route.', $request->url->pathRelative()));
-	$response->setStatus(404);
-	$response->echoHeaders();
-	exit;
-}
-
-$controllerName		= $route['controller'];
-$controllerName		= preg_replace('/\//', '\\', $controllerName);
-$controllerName		= preg_replace('/\./', '', $controllerName);
-$controllerName		= "Atwood\\controllers\\{$controllerName}";
-$actionName			= 'action_' . $route['action'];
-
-if (isset($_GET['testRoute']) && Env::mode('dev')) {
-	var_dump($route);
-	exit;
-}
-
-// check if controller class exists
-$classExists	= @class_exists($controllerName, true);
-if (!$classExists) {
-	$log->crit(sprintf('Path "%s" specifies invalid Controller "%s".', $request->url->pathRelative(), $controllerName));
-	$response->setStatus(404);
-	$response->echoHeaders();
-	exit;
-}
-
-// security check on type Controller
-$controllerRef		= new \ReflectionClass($controllerName);
-if (!$controllerRef->isSubclassOf('\\Atwood\\lib\fx\\controllers\\Controller')) {
-	$log->crit(sprintf('Path "%s" specifies class "%s", does not extend Controller.', $request->url->pathRelative(), $controllerName));
-	$response->setStatus(404);
-	$response->echoHeaders();
-	exit;
-}
-
-/** @var \Atwood\lib\fx\controllers\HttpController $controller */
-$controller			= $controllerRef->newInstance($request, $response);
-$controller->setData($route);
-if ($controller instanceof HtmlController) {
-	/** @var \Atwood\lib\fx\controllers\HtmlController $controller */
-	$controller->setView($route['action']);
-}
-
-// security check on Action method
-if (!$controllerRef->hasMethod($actionName)) {
-	$log->crit(sprintf('Path "%s" specifies invalid Action "%s" in Controller "%s".', $request->url->pathRelative(), $actionName, $controllerName));
-	$response->setStatus(404);
-	$response->echoHeaders();
-	exit;
-}
-
-$methodRef			= new \ReflectionMethod($controller, $actionName);
-if (!$methodRef->isPublic()) {
-	$log->crit(sprintf('Path "%s" specifies non-pubic Action "%s" in Controller "%s".', $request->url->pathRelative(), $actionName, $controllerName));
-	$response->setStatus(404);
-	$response->echoHeaders();
-	exit;
-}
-
-// invoke!
+// invoke the controller, render output, and echo the http response
 try {
-	$methodRef->invoke($controller);
+	$response		= $atWood->dispatch();
 	$response->echoHeaders();
-	echo $controller->render();
+	$response->echoBody();
 } catch (ApiException $aex) {
-	$response->setStatus($aex->status);
-	$response->echoHeaders();
-
+	$errResponse	= new HttpResponse();
+	$errResponse->setStatus($aex->status);
 	if (Env::mode('dev')) {
 		$log->addDebugException($aex);
-		echo $aex->getMessage();
-		echo $aex->getTraceAsString();
+		$errResponse->setBody(nl2br(htmlspecialchars($aex->getMessage() . $aex->getTraceAsString())));
+		$errResponse->echoHeaders();
+		$errResponse->echoBody();
 	}
-} catch (Exception $ex) {
+} catch (\Exception $ex) {
 	$log->addErrorException($ex);
 
-	$response->setStatus(500);
-	$response->echoHeaders();
-
+	$errResponse	= new HttpResponse();
+	$errResponse->setStatus(500);
 	if (Env::mode('dev')) {
-		echo $ex->getMessage();
-		echo $ex->getTraceAsString();
+		$errResponse->setBody(nl2br(htmlspecialchars($ex->getMessage() . $ex->getTraceAsString())));
+		$errResponse->echoHeaders();
+		$errResponse->echoBody();
 	}
 }
-

@@ -226,6 +226,26 @@ class HttpResponse {
 	}
 
 	/**
+	 * Is the response a redirection?
+	 * @return bool
+	 */
+	public function isRedirected() {
+		return isset($this->headers['Location']);
+	}
+
+	/**
+	 * Set the body of the response
+	 * @param string $body
+	 */
+	public function setBody($body, $append = false) {
+		if ($append) {
+			$this->body	.= trim($body);
+		} else {
+			$this->body	= trim($body);
+		}
+	}
+
+	/**
 	 * Echo headers to the output buffer
 	 * @return void
 	 */
@@ -247,7 +267,7 @@ class HttpResponse {
 	 * @return void
 	 */
 	public function echoBody() {
-		if (is_null($this->body)) {
+		if (is_null($this->body) || $this->isRedirected()) {
 			return;
 		}
 		echo $this->body;
