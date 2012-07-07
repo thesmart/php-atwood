@@ -12,20 +12,20 @@ $atWood->getHtml('/', function() {
 	$a = 1;
 }, 'Landing/start');
 
-///***********************************
-// * Dynamic helpers
-// **********************************/
-//
-//if (Env::mode('dev')) {
-//	// only enable these routes when the environment is in developer mode
-//	$atWood->getHtml('/less/:fileName', array('Statics', 'less'));
-//
-//	// only enable these routes when the environment is in developer mode
+/***********************************
+ * Dynamic helpers
+ **********************************/
+
+if (Env::mode('dev')) {
+	// only enable these routes when the environment is in developer mode
+	$atWood->getCustom('/less/:fileName', array('Statics', 'less'));
+
+	// only enable these routes when the environment is in developer mode
 //	$map->connect('/coffee/:fileName', array(
 //		'controller'	=> 'Statics',
 //		'action'		=> 'coffee'
 //	));
-//}
+}
 
 ///***********************************
 // * Unit tests

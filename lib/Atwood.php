@@ -93,7 +93,7 @@ class Atwood {
 	}
 
 	/**
-	 * Add a GET route that will render HTML to the output buffer
+	 * Add a GET route where the response will have an HTML body
 	 * @param string $route				The route to match
 	 * @param mixed $action				Either a closure to invoke, or an array(<controllerName>, <actionMethodName>)
 	 * @param string $actionView		Optional. The /views/action file to render (without extensions)
@@ -113,6 +113,20 @@ class Atwood {
 			'type'			=> 'html',
 			'actionView'	=> $actionView,
 			'layoutView'	=> $layoutView
+		));
+		++$this->index;
+	}
+
+	/**
+	 * Add a GET route where the response is completely customizable by the controller
+	 * @param string $route				The route to match
+	 * @param mixed $action				Either a closure to invoke, or an array(<controllerName>, <actionMethodName>)
+	 */
+	public function getCustom($route, $action) {
+		$this->actions[$this->index]	= $action;
+		$this->getMapper->connect($route, array(
+			'id'			=> $this->index,
+			'type'			=> 'custom'
 		));
 		++$this->index;
 	}
@@ -167,6 +181,10 @@ class Atwood {
 	private function dispatchReflection(array $action, array $route) {
 		list($controllerName, $actionName)	= $action;
 		$path	= $this->request->url->pathRelative();
+
+		$controllerName		= str_replace('/', '\\', $controllerName);
+		$controllerName		= str_replace('.', '', $controllerName);
+		$controllerName		= "Atwood\\controllers\\{$controllerName}";
 
 		// check if controller class exists
 		$classExists	= @class_exists($controllerName, true);
@@ -227,6 +245,8 @@ class Atwood {
 	 * @param array $route
 	 */
 	private function initController(Controller $controller, array $route) {
+		$controller->setData($route);
+
 		if ($route['type'] === 'html') {
 			/** @var HtmlController $controller */
 
