@@ -184,20 +184,20 @@ class Atwood {
 
 		$controllerName		= str_replace('/', '\\', $controllerName);
 		$controllerName		= str_replace('.', '', $controllerName);
-		$controllerName		= "Atwood\\controllers\\{$controllerName}";
+		$controllerClass		= "Atwood\\controllers\\{$controllerName}";
 
 		// check if controller class exists
-		$classExists	= @class_exists($controllerName, true);
+		$classExists	= @class_exists($controllerClass, true);
 		if (!$classExists) {
-			$this->log->crit(sprintf('Path "%s" specifies invalid HttpController "%s".', $path, $controllerName));
+			$this->log->crit(sprintf('Path "%s" specifies invalid HttpController "%s".', $path, $controllerClass));
 			$this->response->setStatus(404);
 			return null;
 		}
 
 		// security check on type HttpController
-		$controllerRef		= new \ReflectionClass($controllerName);
+		$controllerRef		= new \ReflectionClass($controllerClass);
 		if (!$controllerRef->isSubclassOf('\\Atwood\\lib\fx\\controllers\\HttpController')) {
-			$this->log->crit(sprintf('Path "%s" specifies class "%s", does not extend HttpController.', $path, $controllerName));
+			$this->log->crit(sprintf('Path "%s" specifies class "%s", does not extend HttpController.', $path, $controllerClass));
 			$this->response->setStatus(404);
 			return null;
 		}
@@ -208,14 +208,14 @@ class Atwood {
 		// security check on Action method
 		$methodName	= "action_{$actionName}";
 		if (!$controllerRef->hasMethod($methodName)) {
-			$this->log->crit(sprintf('Path "%s" specifies invalid Action "%s" in Controller "%s".', $path, $actionName, $controllerName));
+			$this->log->crit(sprintf('Path "%s" specifies invalid Action "%s" in Controller "%s".', $path, $actionName, $controllerClass));
 			$this->response->setStatus(404);
 			return null;
 		}
 
 		$methodRef			= new \ReflectionMethod($controller, $methodName);
 		if (!$methodRef->isPublic()) {
-			$this->log->crit(sprintf('Path "%s" specifies non-pubic Action "%s" in Controller "%s".', $path, $actionName, $controllerName));
+			$this->log->crit(sprintf('Path "%s" specifies non-pubic Action "%s" in Controller "%s".', $path, $actionName, $controllerClass));
 			$this->response->setStatus(404);
 			return null;
 		}
