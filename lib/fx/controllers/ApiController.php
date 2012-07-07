@@ -10,8 +10,8 @@ class ApiController extends Controller {
 	 */
 	public $response;
 
-	public function __construct(array $route) {
-		parent::__construct($route);
+	public function __construct() {
+		parent::__construct();
 	}
 
 	/**

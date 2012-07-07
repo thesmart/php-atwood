@@ -58,7 +58,7 @@ class HtmlControllerTest extends \Atwood\lib\test\AtwoodTest {
 	}
 
 	public function testRender() {
-		$c		= new MockHtmlController($this->route, $this->request, $this->response);
+		$c		= new MockHtmlController($this->request, $this->response);
 		$c->action_test();
 		$html	= $c->render();
 		$this->assertStringStartsWith('<!DOCTYPE html>', $html);
@@ -66,7 +66,7 @@ class HtmlControllerTest extends \Atwood\lib\test\AtwoodTest {
 	}
 
 	public function testLog() {
-		$c	= new MockHtmlController($this->route, $this->request, $this->response);
+		$c	= new MockHtmlController($this->request, $this->response);
 		$this->assertEquals('Atwood\\tests\\lib\\fx\\controllers\\MockHtmlController', $c->log->getName());
 	}
 }
@@ -76,6 +76,7 @@ class MockHtmlController extends \Atwood\lib\fx\controllers\HtmlController {
 	public $layout = 'default';
 
 	public function action_test() {
+		$this->setView('UnitTest/testView');
 		$this->setData(array('answer' => '#1 Answer!'));
 	}
 }

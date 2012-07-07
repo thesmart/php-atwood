@@ -19,8 +19,8 @@ global $SCRIPT_START_TIME;
 JsStatics::inclHead(JS_OLD_IE);
 
 $pageTitle			= isset($pageTitle) ? $pageTitle : "php-atwood: It's a Good Day to Start Something New";
-$bodyId				= isset($controller) ? sprintf(' id="%s"', $h($controller)) : '';
-$bodyClass			= isset($action) ? sprintf(' class="%s"', $h($action)) : '';
+$bodyId				= !empty($controller) ? sprintf(' id="%s"', $h($controller)) : '';
+$bodyClass			= !empty($action) ? sprintf(' class="%s"', $h($action)) : '';
 ?>
 
 <!DOCTYPE html>

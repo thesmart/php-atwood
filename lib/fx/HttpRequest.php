@@ -67,6 +67,12 @@ class HttpRequest {
 	public function __construct(array $server) {
 		$server = isset($server) ? $server : $_SERVER;
 
+		$this->ip		= self::GetIp($server);
+		$this->url		= new Url($server['REQUEST_URI']);
+		$this->isHttps	= !empty($server['HTTPS']);
+		$this->headers	= self::GetHeaders($server);
+
+		$this->method	= isset($server['REQUEST_METHOD']) ? strtolower($server['REQUEST_METHOD']) : 'get';
 		$this->get		= $_GET;
 		$this->post		= $_POST;
 		$this->put		= array();
@@ -83,12 +89,6 @@ class HttpRequest {
 		} else {
 			$this->data		= $_GET;
 		}
-
-		$this->method = isset($server['REQUEST_METHOD']) ? strtolower($server['REQUEST_METHOD']) : 'get';
-		$this->ip		= self::GetIp($server);
-		$this->url		= new Url($server['REQUEST_URI']);
-		$this->isHttps	= !empty($server['HTTPS']);
-		$this->headers	= self::GetHeaders($server);
 	}
 
 	/**

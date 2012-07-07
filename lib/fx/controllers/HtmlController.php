@@ -3,25 +3,12 @@ namespace Atwood\lib\fx\controllers;
 
 use \Atwood\lib\fx\HttpRequest;
 use \Atwood\lib\fx\HttpResponse;
-use \Atwood\lib\fx\controllers\Controller;
+use \Atwood\lib\fx\controllers\HttpController;
 
 /**
  * A controller that handles web-browser requests for HTML5 responses
  */
-class HtmlController extends Controller {
-
-	/**
-	 * The request sent by the client
-	 * @var \Atwood\lib\fx\HttpRequest
-	 */
-	public $request;
-
-	/**
-	 * The response to return to the client at the end of the current request process
-	 * @var \Atwood\lib\fx\HttpResponse
-	 */
-	public $response;
-
+class HtmlController extends HttpController {
 	/**
 	 * The layout file to use, see the /views/layouts folder
 	 * @var string
@@ -29,34 +16,27 @@ class HtmlController extends Controller {
 	public $layout = 'blank';
 
 	/**
-	 * The folder of action views to render from. Default: /views/<Controller>/
+	 * Path to the action view file to render, relative to the /views/actions folder
 	 * @var string
 	 */
-	public $viewFolder;
+	public $viewPath = null;
+
+	public function __construct(HttpRequest $request, HttpResponse $response) {
+		parent::__construct($request, $response);
+		$this->response->setContentType('html');
+	}
 
 	/**
-	 * The action view file to render. Default to route <Action>.html.php
-	 * @var string
+	 * Set which view to load at render()
+	 * @param string $viewPath		Path to the action view file to render, relative to the /views/actions folder
 	 */
-	public $viewFile;
-
-	public function __construct(array $route, HttpRequest $request, HttpResponse $response) {
-		$response->setContentType('html');
-		parent::__construct($route);
-
-		$this->request	= $request;
-		$this->response	= $response;
-
-		// prevent folder navigation
-		$this->viewFolder	= str_replace('/', '', $route['controller']);
-		$this->viewFolder	= str_replace('.', '', $this->viewFolder);
-
-		$this->viewFile		= str_replace('/', '', $route['action']);
-		$this->viewFile		= str_replace('.', '', $this->viewFile);
-
-		// set $_GET and $_POST
-		$this->data			= array_merge($request->get, $this->data);
-		$this->data			= array_merge($request->post, $this->data);
+	public function setView($viewPath) {
+		$viewPath	= preg_replace('/action_/', '', $viewPath);
+		if (stripos($viewPath, '/') > 0) {
+			$this->viewPath	= $viewPath;
+		} else {
+			$this->viewPath	= "{$this->name}/{$viewPath}";
+		}
 	}
 
 	/**
@@ -64,7 +44,6 @@ class HtmlController extends Controller {
 	 * @return string			The html
 	 */
 	public function render() {
-		extract($this->route);
 		extract($this->data);
 
 		/**
@@ -86,9 +65,12 @@ class HtmlController extends Controller {
 			return ob_get_clean();
 		};
 
-		ob_start();
-		require PATH_ACTION . "{$this->viewFolder}/{$this->viewFile}.html.php";
-		$actionHtml	= ob_get_clean();
+		$actionHtml	= '';
+		if (is_string($this->viewPath)) {
+			ob_start();
+			require PATH_ACTION . "{$this->viewPath}.html.php";
+			$actionHtml	= ob_get_clean();
+		}
 
 		ob_start();
 		require PATH_LAYOUT . "{$this->layout}.html.php";

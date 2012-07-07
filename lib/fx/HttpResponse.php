@@ -149,7 +149,7 @@ class HttpResponse {
 	 * The response body
 	 * @var array
 	 */
-	public $body	= '';
+	public $body	= null;
 
 	/**
 	 * Constructor
@@ -240,5 +240,16 @@ class HttpResponse {
 		}
 
 		header(sprintf('%s %s', 'HTTP/1.1', $this->headers['HTTP/1.1']), true, $this->status);
+	}
+
+	/**
+	 * Echo the body to the output buffer
+	 * @return void
+	 */
+	public function echoBody() {
+		if (is_null($this->body)) {
+			return;
+		}
+		echo $this->body;
 	}
 }

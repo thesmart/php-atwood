@@ -103,7 +103,7 @@ class UnitTest extends \Atwood\lib\fx\controllers\HtmlController {
 
 		// load the test class
 		if (!@file_exists($filePath)) {
-			$this->viewFile	= 'unknownTest';
+			$this->setView('unknownTest');
 			return;
 		}
 		include_once $filePath;
@@ -111,7 +111,7 @@ class UnitTest extends \Atwood\lib\fx\controllers\HtmlController {
 
 		// detect if class is a valid test
 		if (!$class->isSubclassOf('\\Atwood\\lib\\test\\AtwoodTest')) {
-			$this->viewFile	= 'unknownTest';
+			$this->setView('unknownTest');
 			return;
 		}
 

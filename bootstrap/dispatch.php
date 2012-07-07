@@ -8,6 +8,7 @@
 use \Atwood\lib\Url;
 use \Atwood\lib\fx\Env;
 use \Atwood\lib\fx\controllers\Controller;
+use Atwood\lib\fx\controllers\HtmlController;
 use \Atwood\lib\fx\HttpRequest;
 use \Atwood\lib\fx\HttpResponse;
 use \Atwood\lib\fx\exception\ApiException;
@@ -54,9 +55,13 @@ if (!$controllerRef->isSubclassOf('\\Atwood\\lib\fx\\controllers\\Controller')) 
 	exit;
 }
 
-/** @var \Atwood\lib\fx\controllers\Controller $controller */
-$controller			= $controllerRef->newInstance($route, $request, $response);
+/** @var \Atwood\lib\fx\controllers\HttpController $controller */
+$controller			= $controllerRef->newInstance($request, $response);
 $controller->setData($route);
+if ($controller instanceof HtmlController) {
+	/** @var \Atwood\lib\fx\controllers\HtmlController $controller */
+	$controller->setView($route['action']);
+}
 
 // security check on Action method
 if (!$controllerRef->hasMethod($actionName)) {

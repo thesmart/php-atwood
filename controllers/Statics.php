@@ -13,28 +13,11 @@ use \Less\lessc;
 /**
  * Serves dynamically generated static files
  */
-class Statics extends \Atwood\lib\fx\controllers\Controller {
+class Statics extends \Atwood\lib\fx\controllers\HttpController {
 
 	const TIMEOUT = 60; // 1 min
 
-	/**
-	 * @var \Atwood\lib\fx\HttpRequest
-	 */
-	public $request;
-
-	/**
-	 * @var \Atwood\lib\fx\HttpResponse
-	 */
-	public $response;
-
 	public $output = '';
-
-	public function __construct(array $route, HttpRequest $request, HttpResponse $response) {
-		parent::__construct($route);
-
-		$this->request	= $request;
-		$this->response	= $response;
-	}
 
 	public function setup() {
 		if (Env::mode('prod')) {

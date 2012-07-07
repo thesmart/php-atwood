@@ -6,10 +6,10 @@ use Monolog\Logger;
 abstract class Controller {
 
 	/**
-	 * Information about the current route picked
-	 * @var array
+	 * Name of this controller
+	 * @var string
 	 */
-	public $route;
+	public $name;
 
 	/**
 	 * The logging instance
@@ -23,8 +23,9 @@ abstract class Controller {
 	 */
 	public $data	= array();
 
-	public function __construct(array $route) {
-		$this->route	= $route;
+	public function __construct() {
+		$this->name		= explode('\\', get_called_class());
+		$this->name		= $this->name[count($this->name) - 1];
 		$this->log		= getLogger(get_called_class());
 		$this->setUp();
 	}

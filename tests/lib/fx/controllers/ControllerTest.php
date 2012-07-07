@@ -7,7 +7,7 @@ use \Atwood\lib\fx\controllers\Controller;
 class ControllerTest extends \Atwood\lib\test\AtwoodTest {
 
 	public function testData() {
-		$c = new MockController(array());
+		$c = new MockController();
 		$c->setData(array(
 			'a' => ord('a'),
 			'b' => ord('b'),
@@ -24,7 +24,7 @@ class ControllerTest extends \Atwood\lib\test\AtwoodTest {
 	}
 
 	public function testLog() {
-		$c = new MockController(array());
+		$c = new MockController();
 		$this->assertEquals('Atwood\\tests\\lib\\fx\\controllers\\MockController', $c->log->getName());
 	}
 }
