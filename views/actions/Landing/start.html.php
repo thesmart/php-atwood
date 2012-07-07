@@ -1,7 +1,7 @@
 <?php
 /**
  * 
- * @var callback $h			Short-cut for htmlspecialchars()
+ * @var \Closure $h			Short-cut for htmlspecialchars()
  */
  
 ?>

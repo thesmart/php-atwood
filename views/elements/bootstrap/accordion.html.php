@@ -1,8 +1,8 @@
 <?php
 /**
  * View
- * @var callback $el		Function for rendering an element from the /views/elements folder
- * @var callback $h		Short-cut for htmlspecialchars()
+ * @var \Closure $el		Function for rendering an element from the /views/elements folder
+ * @var \Closure $h		Short-cut for htmlspecialchars()
  * @var string $level	Values: null, primary, danger, warning, success, info, inverse
  * @var string $id		Unique id of the element pair
  * @var string $label

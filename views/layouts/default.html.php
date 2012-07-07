@@ -3,11 +3,11 @@
  * The default site layout.
  *
  * @var int $SCRIPT_START_TIME
- * @var callback $h			Short-cut for htmlspecialchars()
- * @var callback $el		Function for rendering an element from the /views/elements folder
+ * @var \Closure $h			Short-cut for htmlspecialchars()
+ * @var \Closure $el		Function for rendering an element from the /views/elements folder
  * @var string $pageTitle
  * @var string $bodyId
- * @var string $bodyClasses
+ * @var string $bodyClass
  * @var string $actionHtml
  */
 
@@ -19,8 +19,8 @@ global $SCRIPT_START_TIME;
 JsStatics::inclHead(JS_OLD_IE);
 
 $pageTitle			= isset($pageTitle) ? $pageTitle : "php-atwood: It's a Good Day to Start Something New";
-$bodyId				= !empty($controller) ? sprintf(' id="%s"', $h($controller)) : '';
-$bodyClass			= !empty($action) ? sprintf(' class="%s"', $h($action)) : '';
+$bodyId				= !empty($bodyId) ? sprintf(' id="%s"', $h($bodyId)) : '';
+$bodyClass			= !empty($bodyClass) ? sprintf(' class="%s"', $h($bodyClass)) : '';
 ?>
 
 <!DOCTYPE html>

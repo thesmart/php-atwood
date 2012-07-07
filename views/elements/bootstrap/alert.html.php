@@ -1,6 +1,6 @@
 <?php
 /**
- * @var callback $h			Short-cut for htmlspecialchars()
+ * @var \Closure $h			Short-cut for htmlspecialchars()
  * @var string $hn		The h1, h2, or whatever hn tag
  * @var string $body		Optional.
  * @var string $enableClose Optional.

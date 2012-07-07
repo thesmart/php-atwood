@@ -1,7 +1,7 @@
 <?php
 /**
- * @var callback $h			Short-cut for htmlspecialchars()
- * @var callback $el		Function for rendering an element from the /views/elements folder
+ * @var \Closure $h			Short-cut for htmlspecialchars()
+ * @var \Closure $el		Function for rendering an element from the /views/elements folder
  * @var Atwood\lib\fx\exception\Trace $trace
  * @var \PHPUnit_Framework_TestFailure $error
  */

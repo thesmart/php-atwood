@@ -1,8 +1,8 @@
 <?php
 /**
  * Render all passed tests
- * @var callback $h			Short-cut for htmlspecialchars()
- * @var callback $el		Function for rendering an element from the /views/elements folder
+ * @var \Closure $h			Short-cut for htmlspecialchars()
+ * @var \Closure $el		Function for rendering an element from the /views/elements folder
  * @var string $suiteName
  * @var array $passed
  * @var int $numTests
