@@ -70,19 +70,23 @@ class Atwood {
 	/**
 	 * Map an HtmlController to a path
 	 * @param string $pattern
+	 * @param string $controllerName		Optional. the class name of a controller class extending from Atwood\lib\fx\controllers\HttpController
+	 * @param string $actionName			Optional. The action method in the controller to execute.
 	 * @return fx\Route
 	 */
-	public function mapHtml($pattern) {
-		return $this->map($pattern, Route::CONTROLLER_TYPE_HTML);
+	public function mapHtml($pattern, $controllerName = null, $actionName = null) {
+		return $this->map($pattern, $controllerName ? $controllerName : Route::CONTROLLER_TYPE_HTML);
 	}
 
 	/**
 	 * Map an ApiController to a path
 	 * @param string $pattern
+	 * @param string $controllerName		Optional. the class name of a controller class extending from Atwood\lib\fx\controllers\HttpController
+	 * @param string $actionName			Optional. The action method in the controller to execute.
 	 * @return fx\Route
 	 */
-	public function mapApi($pattern) {
-		return $this->map($pattern, Route::CONTROLLER_TYPE_API);
+	public function mapApi($pattern, $controllerName = null, $actionName = null) {
+		return $this->map($pattern, $controllerName ? $controllerName : Route::CONTROLLER_TYPE_API);
 	}
 
 	/**
