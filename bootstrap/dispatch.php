@@ -19,13 +19,15 @@ try {
 	$errResponse	= new HttpResponse();
 	$errResponse->setStatus($aex->status);
 	if (Env::mode('dev')) {
-		$log->addDebugException($aex);
+		$log->addDebug($aex);
+		$log->addDebug($aex->getTraceAsString());
 		$errResponse->setBody(nl2br(htmlspecialchars($aex->getMessage() . $aex->getTraceAsString())));
 		$errResponse->echoHeaders();
 		$errResponse->echoBody();
 	}
 } catch (\Exception $ex) {
-	$log->addErrorException($ex);
+	$log->addError($ex);
+	$log->addError($ex->getTraceAsString());
 
 	$errResponse	= new HttpResponse();
 	$errResponse->setStatus(500);

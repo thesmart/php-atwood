@@ -3,10 +3,10 @@
  * Setup logging infrastructure
  */
 
-use \Atwood\lib\fx\Env;
 use Monolog\Logger;
-use Monolog\Handler\PhpErrorLogHandler;
 use Monolog\Handler\StreamHandler;
+use Atwood\lib\fx\Env;
+use Atwood\lib\log\PhpErrorLogHandler;
 
 global $_LOGS, $_STD_OUT, $_STD_ERR;
 

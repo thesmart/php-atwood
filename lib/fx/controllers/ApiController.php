@@ -1,5 +1,5 @@
 <?php
-namespace Atwood\lib\fx;
+namespace Atwood\lib\fx\controllers;
 
 use \Atwood\lib\fx\controllers\Controller;
 

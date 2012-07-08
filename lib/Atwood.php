@@ -10,6 +10,7 @@ use Monolog\Logger;
 
 use \Atwood\lib\Url;
 use \Atwood\lib\fx\Env;
+use Atwood\lib\fx\Route;
 use \Atwood\lib\fx\HttpRequest;
 use \Atwood\lib\fx\HttpResponse;
 use \Atwood\lib\fx\exception\ApiException;
@@ -26,31 +27,6 @@ class Atwood {
 	private $log;
 
 	/**
-	 * The route mapper for GET method
-	 * @var Horde_Routes_Mapper
-	 */
-	private $getMapper;
-
-	/**
-	 * A route mapper for POST method
-	 * @var Horde_Routes_Mapper
-	 */
-	private $postMapper;
-
-	/**
-	 * A route mapper for PUT method
-	 * @var Horde_Routes_Mapper
-	 */
-	private $putMapper;
-
-	/**
-	 * A route mapper for DELETE method
-	 * @var Horde_Routes_Mapper
-	 */
-	private $deleteMapper;
-
-
-	/**
 	 * The request sent by the client
 	 * @var \Atwood\lib\fx\HttpRequest
 	 */
@@ -63,106 +39,87 @@ class Atwood {
 	private $response;
 
 	/**
-	 * The next index to assign to a route
-	 * @var int
-	 */
-	private $index = 0;
-
-	/**
-	 * All the registered actions
+	 * Collection or Routes
 	 * @var array
 	 */
-	private $actions = array();
+	private $routes = array();
 
 	/**
 	 * Initialize the route mapper
 	 */
 	public function __construct($server = null) {
-		$map = new Horde_Routes_Mapper();
-		// Turn on sub-domain support
-		$map->subDomains	= true;
-		// Set the environment
-		$map->environ		= $server ? $server : $_SERVER;
-		// Set the director to scan for controller classes
-		$map->directory		= PATH_ROOT . 'controllers';
-
 		$this->log			= getLogger(get_called_class());
-		$this->getMapper	= $map;
 		$this->request		= new HttpRequest($server ? $server : $_SERVER);
 		$this->response		= new HttpResponse();
 	}
 
 	/**
-	 * Add a GET route where the response will have an HTML body
-	 * @param string $route				The route to match
-	 * @param mixed $action				Either a closure to invoke, or an array(<controllerName>, <actionMethodName>)
-	 * @param string $actionView		Optional. The /views/action file to render (without extensions)
-	 * @param string $layoutView		Optional. The /views/layout file to render (without extensions)
+	 * @param string $pattern
+	 * @param string $controllerName		the class name of a controller class extending from Atwood\lib\fx\controllers\HttpController
+	 * @param string $actionName			Optional. The action method in the controller to execute.
+	 * @return fx\Route
 	 */
-	public function getHtml($route, $action, $actionView = null, $layoutView = 'default') {
-		if (empty($actionView)) {
-			if (is_array($action)) {
-				$actionView	= "{$action[0]}/{$action[1]}";
-			} else {
-				$actionView	= 'default/blank';
-			}
-		}
-		$this->actions[$this->index]	= $action;
-		$this->getMapper->connect($route, array(
-			'id'			=> $this->index,
-			'type'			=> 'html',
-			'actionView'	=> $actionView,
-			'layoutView'	=> $layoutView
-		));
-		++$this->index;
+	public function map($pattern, $controllerName, $actionName = null) {
+		$route = new Route($pattern);
+		$route->setController($controllerName, $actionName);
+		$route->setView($actionName);
+		$this->routes[]	= $route;
+		return $route;
 	}
 
 	/**
-	 * Add a GET route where the response is completely customizable by the controller
-	 * @param string $route				The route to match
-	 * @param mixed $action				Either a closure to invoke, or an array(<controllerName>, <actionMethodName>)
+	 * Map an HtmlController to a path
+	 * @param string $pattern
+	 * @return fx\Route
 	 */
-	public function getCustom($route, $action) {
-		$this->actions[$this->index]	= $action;
-		$this->getMapper->connect($route, array(
-			'id'			=> $this->index,
-			'type'			=> 'custom'
-		));
-		++$this->index;
+	public function mapHtml($pattern) {
+		return $this->map($pattern, Route::CONTROLLER_TYPE_HTML);
+	}
+
+	/**
+	 * Map an ApiController to a path
+	 * @param string $pattern
+	 * @return fx\Route
+	 */
+	public function mapApi($pattern) {
+		return $this->map($pattern, Route::CONTROLLER_TYPE_API);
+	}
+
+	/**
+	 * Map an ApiController to a path
+	 * @param string $pattern
+	 * @return fx\Route
+	 */
+	public function mapClosure($pattern) {
+		$route = new Route($pattern);
+		$this->routes[]	= $route;
+		return $route;
 	}
 
 	/**
 	 * Dispatch the request by constructing a Controller and invoking its Action
 	 */
 	public function dispatch() {
-		// match a route to the path
-		$route	= null;
-		$path	= $this->request->url->pathRelative();
-		if ($this->request->method === HttpRequest::METHOD_GET) {
-			$route	= $this->getMapper->match($path);
-		} else if ($this->request->method === HttpRequest::METHOD_POST) {
-			$route	= $this->postMapper->match($path);
-		} else if ($this->request->method === HttpRequest::METHOD_PUT) {
-			$route	= $this->putMapper->match($path);
-		} else if ($this->request->method === HttpRequest::METHOD_DELETE) {
-			$route	= $this->deleteMapper->match($path);
+		/** @var Route $matchedRoute */
+		$matchedRoute	= null;
+
+		$path			= $this->request->url->pathRelative();
+		foreach ($this->routes as /** @var Route $route */ $route) {
+			if ($route->matches($path)) {
+				$matchedRoute	= $route;
+				break;
+			}
 		}
 
 		// handle route
-		if (is_null($route)) {
+		if (is_null($matchedRoute)) {
 			$this->log->debug(sprintf('Path "%s" does not match any route.', $path));
 			$this->response->setStatus(404);
 			return $this->response;
 		}
 
 		// dispatch the controller
-		$action		= $this->actions[$route['id']];
-		$controller	= null;
-		if (is_array($action)) {
-			$controller	= $this->dispatchReflection($action, $route);
-		} else if ($action instanceof \Closure) {
-			$controller	= $this->dispatchClosure($action, $route);
-		}
+		$controller	= $matchedRoute->dispatchController($this->request, $this->response);
 
 		// render
 		$this->response->setBody($controller->render());
@@ -171,99 +128,21 @@ class Atwood {
 	}
 
 	/**
-	 * Dispatch a controller that is defined by a callback array, mapping to a concrete class that extends from
-	 * \Atwood\lib\fx\controllers\Controller
+	 * Set default route conditions for all instances
 	 *
-	 * @param array $action
-	 * @param array $route
-	 * @return Controller
+	 * @param   array $defaultConditions
+	 * @return  void
 	 */
-	private function dispatchReflection(array $action, array $route) {
-		list($controllerName, $actionName)	= $action;
-		$path	= $this->request->url->pathRelative();
-
-		$controllerName		= str_replace('/', '\\', $controllerName);
-		$controllerName		= str_replace('.', '', $controllerName);
-		$controllerClass		= "Atwood\\controllers\\{$controllerName}";
-
-		// check if controller class exists
-		$classExists	= @class_exists($controllerClass, true);
-		if (!$classExists) {
-			$this->log->crit(sprintf('Path "%s" specifies invalid HttpController "%s".', $path, $controllerClass));
-			$this->response->setStatus(404);
-			return null;
-		}
-
-		// security check on type HttpController
-		$controllerRef		= new \ReflectionClass($controllerClass);
-		if (!$controllerRef->isSubclassOf('\\Atwood\\lib\fx\\controllers\\HttpController')) {
-			$this->log->crit(sprintf('Path "%s" specifies class "%s", does not extend HttpController.', $path, $controllerClass));
-			$this->response->setStatus(404);
-			return null;
-		}
-
-		/** @var \Atwood\lib\fx\controllers\Controller $controller */
-		$controller			= $controllerRef->newInstance($this->request, $this->response);
-
-		// security check on Action method
-		$methodName	= "action_{$actionName}";
-		if (!$controllerRef->hasMethod($methodName)) {
-			$this->log->crit(sprintf('Path "%s" specifies invalid Action "%s" in Controller "%s".', $path, $actionName, $controllerClass));
-			$this->response->setStatus(404);
-			return null;
-		}
-
-		$methodRef			= new \ReflectionMethod($controller, $methodName);
-		if (!$methodRef->isPublic()) {
-			$this->log->crit(sprintf('Path "%s" specifies non-pubic Action "%s" in Controller "%s".', $path, $actionName, $controllerClass));
-			$this->response->setStatus(404);
-			return null;
-		}
-
-		$this->initController($controller, $route);
-		$methodRef->invoke($controller);
-		return $controller;
+	public static function setDefaultConditions(array $defaultConditions) {
+		Route::setDefaultConditions($defaultConditions);
 	}
 
 	/**
-	 * Dispatch a controller that is defined by an anonymous function Closure
-	 *
-	 * @param callable $closure
-	 * @param array $route
-	 * @return fx\controllers\HtmlController
+	 * Set default layout for all instances
+	 * @static
+	 * @param $layout
 	 */
-	private function dispatchClosure(\Closure $closure, array $route) {
-		$controller	= new HtmlController($this->request, $this->response);
-		$this->initController($controller, $route);
-		$closure($controller);
-		return $controller;
+	public static function setDefaultLayout($layout) {
+		Route::setDefaultLayout($layout);
 	}
-
-	/**
-	 * After a controller is constructed, it needs to be initialized to a state known by Atwood
-	 * @param fx\controllers\Controller $controller
-	 * @param array $route
-	 */
-	private function initController(Controller $controller, array $route) {
-		$controller->setData($route);
-
-		if ($route['type'] === 'html') {
-			/** @var HtmlController $controller */
-
-			// prevent folder navigation
-			$route['layoutView']	= str_replace('\\', '/', $route['layoutView']);
-			$route['layoutView']	= str_replace('.', '', $route['layoutView']);
-
-			if (is_null($route['actionView'])) {
-				$route['actionView']	= 'default/blank';
-			}
-
-			$route['actionView']	= str_replace('\\', '/', $route['actionView']);
-			$route['actionView']	= str_replace('.', '', $route['actionView']);
-
-			$controller->setView($route['actionView']);
-			$controller->setLayout($route['layoutView']);
-		}
-	}
-
 }

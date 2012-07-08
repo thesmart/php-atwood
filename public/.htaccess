@@ -8,8 +8,6 @@ AddEncoding x-gzip .gz
 <IfModule mod_rewrite.c>
 	RewriteEngine On
 
-	RewriteRule ^cloudfront[0-9a-zA-Z]*/(.*)$ /$1 [L]
-
 	RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule ^(.*)$ index.php [QSA,L]

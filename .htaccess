@@ -5,12 +5,14 @@ AddType text/css .css
 
 AddEncoding x-gzip .gz
 
+DirectorySlash Off
+
 <IfModule mod_rewrite.c>
 	RewriteEngine On
 
 	# For SEO, transform any www. links to a link without www.
-	RewriteCond %{HTTP_HOST}		^(www)\.(.+)$ [NC]
-	RewriteRule ^(.*)$				http://%2 [L,R=301]
+	RewriteCond %{HTTP_HOST}		^www\.(.+)$ [NC]
+	RewriteRule ^(.*)$				http://%1%{REQUEST_URI} [L,R=301]
 
 	# Force site to be HTTPS only (Atwood supports this)
 #	RewriteCond %{HTTPS} !=on

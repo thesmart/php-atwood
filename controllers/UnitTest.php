@@ -14,7 +14,7 @@ use \Atwood\lib\fx\statics\CssStatics;
 class UnitTest extends \Atwood\lib\fx\controllers\HtmlController {
 
 	public function setUp() {
-		$this->layout	= 'tests';
+		$this->setLayout('tests');
 		CssStatics::inclHead(CSS_TEST);
 		JsStatics::inclHead(JS_TEST);
 	}

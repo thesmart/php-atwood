@@ -27,7 +27,6 @@ abstract class Controller {
 		$this->name		= explode('\\', get_called_class());
 		$this->name		= $this->name[count($this->name) - 1];
 		$this->log		= getLogger(get_called_class());
-		$this->setUp();
 	}
 
 	/**
