@@ -31,6 +31,9 @@ function main() {
 	// Load any libraries, on later demand
 	require_once PATH_BOOT . 'autoload.php';
 
+	// Load vendor libraries
+	require PATH_ROOT . 'vendor/autoload.php';
+
 	// Setup the environment configuration
 	require_once PATH_BOOT . 'environment.php';
 

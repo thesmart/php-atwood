@@ -20,9 +20,6 @@ spl_autoload_register(function($class) {
 		}
 		$path		= PATH_EXTERNAL . $class . '.php';
 		include_once $path;
-	} else if (strstr($class, 'Monolog') !== false) {
-		$path		= PATH_EXTERNAL . $class . '.php';
-		include_once $path;
 	}
 });
 

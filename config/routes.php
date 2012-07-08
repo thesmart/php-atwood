@@ -21,11 +21,19 @@ if (Env::mode('dev')) {
 	$atWood->getCustom('/less/:fileName', array('Statics', 'less'));
 
 	// only enable these routes when the environment is in developer mode
-//	$map->connect('/coffee/:fileName', array(
-//		'controller'	=> 'Statics',
-//		'action'		=> 'coffee'
-//	));
+	$atWood->getCustom('/coffee/:fileName', array('Statics', 'coffee'));
 }
+
+/***********************************
+ * Unit tests
+ **********************************/
+
+if (Env::mode('dev')) {
+	// only enable these routes when the environment is in developer mode
+	$atWood->getHtml('/tests', array('UnitTest', 'listTests'), null, 'tests');
+	$atWood->getHtml('/tests/:ns_0/:ns_1/:ns_2/:ns_3/:ns_4/:ns_5/:ns_6/:ns_7', array('UnitTest', 'runTest'), null, 'tests');
+}
+
 
 ///***********************************
 // * Unit tests
