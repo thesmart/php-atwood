@@ -1,17 +1,14 @@
 <?php
 namespace Atwood\lib\fx\controllers;
 
-use \Atwood\lib\fx\controllers\Controller;
+use Atwood\lib\fx\HttpRequest;
+use Atwood\lib\fx\HttpResponse;
 
-class ApiController extends Controller {
+class ApiController extends HttpController {
 
-	/**
-	 * @var \Atwood\lib\fx\HttpResponse
-	 */
-	public $response;
-
-	public function __construct() {
-		parent::__construct();
+	public function __construct(HttpRequest $request, HttpResponse $response) {
+		parent::__construct($request, $response);
+		$this->response->setContentType('json');
 	}
 
 	/**
@@ -31,7 +28,7 @@ class ApiController extends Controller {
 	 * @param array $route			The route currently being dispatched
 	 * @return string				the json
 	 */
-	public function render(array $route) {
+	public function render() {
 		if ($this->response->isRedirected()) {
 			// do not render if redirected
 			return '';

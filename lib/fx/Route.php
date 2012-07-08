@@ -319,11 +319,13 @@ class Route {
 
 	/**
 	 * Append supported HTTP methods (alias for Route::appendHttpMethods)
+	 * @param string $method		The http method to accept
+	 * @param $method,...			Optional additional methods
 	 * @return Route
 	 */
-	public function via() {
-		$args = func_get_args();
-		$this->methods = array_merge($this->methods, $args);
+	public function via($method) {
+		$methods = func_get_args();
+		$this->methods = $methods;
 		return $this;
 	}
 
