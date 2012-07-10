@@ -42,6 +42,7 @@ function main() {
 
 	// Setup the environment configuration
 	require_once PATH_BOOT . 'environment.php';
+
 	Env::set('runtime', 'cli');
 
 	if (Env::mode('dev')) {

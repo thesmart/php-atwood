@@ -23,6 +23,9 @@ spl_autoload_register(function($class) {
 	}
 });
 
+// Load vendor libraries
+require PATH_ROOT . 'vendor/autoload.php';
+
 if (isset($_SERVER['conf']) && $_SERVER['conf'] == 'dev' ) {
 	// run phpunit autoloader
 	require_once 'PHPUnit/Autoload.php';
