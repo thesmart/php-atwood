@@ -1,6 +1,6 @@
 {
 	"require": {
 		"monolog/monolog": "1.1.*",
-        "underscore/Underscore.php": "1.3.*"
+        "dotty/dotty": "0.0.*"
 	}
 }
