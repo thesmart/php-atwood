@@ -1,6 +1,10 @@
 {
-    "hash": "5a815f8289a8aff2221df19c77c67728",
+    "hash": "9de53cee8dd0ef1bb0027c920060113f",
     "packages": [
+        {
+            "package": "Respect/Validation",
+            "version": "0.4.4"
+        },
         {
             "package": "dotty/dotty",
             "version": "v0.0.4"

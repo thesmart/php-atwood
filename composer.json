@@ -1,6 +1,7 @@
 {
 	"require": {
 		"monolog/monolog": "1.1.*",
-        "dotty/dotty": "0.0.*"
+        "dotty/dotty": "0.0.*",
+        "Respect/Validation": "0.4.*"
 	}
 }
