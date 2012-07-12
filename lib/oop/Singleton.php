@@ -8,10 +8,25 @@ abstract class Singleton {
 	 * An array of named instances
 	 * @var array
 	 */
-	private static $instances = null;
+	protected static $instances = array();
 
-	private static function getNs($name = null) {
-		return empty($name) ? get_called_class() : get_called_class() . '::' . $name;
+	/**
+	 * get a reference for a static instance storage
+	 * @static
+	 * @param string $name		Optional. The name of the instance.
+	 * @return array&
+	 */
+	private static function &getRef($name = null) {
+		$cn		= get_called_class();
+		if (!isset(self::$instances[$cn])) {
+			self::$instances[$cn]	= array();
+		}
+
+		$name	= $name ? $name : '_';
+		if (!isset(self::$instances[$cn][$name])) {
+			self::$instances[$cn][$name]	= null;
+		}
+		return self::$instances[$cn][$name];
 	}
 
 	/**
@@ -21,7 +36,8 @@ abstract class Singleton {
 	 * @return bool
 	 */
 	public static function hasInstance($name = null) {
-		return static::getInstance($name) == true;
+		$ref	= &self::getRef($name);
+		return !is_null($ref);
 	}
 
 	/**
@@ -30,13 +46,7 @@ abstract class Singleton {
 	 * @return mixed
 	 */
 	public static function getInstance($name = null) {
-		$name = static::getNs($name);
-
-		if (isset(self::$instances[$name])) {
-			return self::$instances[$name];
-		}
-
-		return null;
+		return self::getRef($name);
 	}
 
 	/**
@@ -46,13 +56,8 @@ abstract class Singleton {
 	 * @return void
 	 */
 	public static function setInstance(Singleton $instance, $name = null) {
-		$name = static::getNs($name);
-		self::$instances[$name]	= $instance;
-
-		if (!static::hasInstance()) {
-			// set the default instance
-			static::setInstance($instance);
-		}
+		$ref = &self::getRef($name);
+		$ref = $instance;
 	}
 
 	/**
@@ -62,10 +67,8 @@ abstract class Singleton {
 	 * @return void
 	 */
 	public static function clearInstance($name = null) {
-		$name = static::getNs($name);
-		if (isset(self::$instances[$name])) {
-			unset(self::$instances[$name]);
-		}
+		$ref = &self::getRef($name);
+		$ref = null;
 	}
 
 	/**
@@ -73,6 +76,29 @@ abstract class Singleton {
 	 * @return array
 	 */
 	public static function getAllInstances() {
-		return self::$instances;
+		$cn		= get_called_class();
+		if (isset(self::$instances[$cn])) {
+			return self::$instances[$cn];
+		}
+		return array();
+	}
+
+	/**
+	 * Unset all instances
+	 * @static
+	 */
+	public static function clearAllInstances() {
+		$keysToClear = array();
+		foreach (static::$instances as $className => $classInstances) {
+			foreach ($classInstances as $instanceName => $instance) {
+				if (!$instance instanceof GlobalSingleton) {
+					$keysToClear[]	= $className;
+				}
+			}
+		}
+
+		foreach ($keysToClear as $key) {
+			unset(self::$instances[$key]);
+		}
 	}
 }

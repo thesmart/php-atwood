@@ -9,27 +9,13 @@ use \Atwood\lib\fx\Env;
  * @method static \Atwood\lib\data\Stache getInstance($name = null)
  * @method static array.<\Atwood\lib\data\Stache> getAllInstances()
  */
-class Stache extends \Atwood\lib\oop\Singleton {
+class Stache extends \Atwood\lib\oop\GlobalSingleton {
 
 	/**
 	 * The write-back static cache
 	 * @var array
 	 */
 	protected static $cache = array();
-
-	/**
-	 * Memcached instance
-	 * @var \Memcached
-	 */
-	protected $mc;
-
-	public function __construct(\Memcached $mc = null) {
-		if (!Env::get('stache.memcached.enabled')) {
-			// memcache disabled
-			$mc = null;
-		}
-		$this->mc	= $mc;
-	}
 
 	/**
 	 * Get the namespace cache key
@@ -49,20 +35,10 @@ class Stache extends \Atwood\lib\oop\Singleton {
 	 *
 	 * @param string $key
 	 * @param mixed $data
-	 * @param int $expiresIn		Optional. Num seconds until expires. Default: 180 seconds
 	 * @return void
 	 */
-	public function set($key, $data, $expiresIn = 180) {
+	public function set($key, $data) {
 		$key	= $this->getKey($key);
-		if ($expiresIn <= 0) {
-			$this->del($key);
-			return;
-		}
-
-		if ($this->mc) {
-			$this->mc->set($key, $data, $expiresIn);
-		}
-
 		static::$cache[$key]	= $data;
 	}
 
@@ -74,9 +50,6 @@ class Stache extends \Atwood\lib\oop\Singleton {
 	 */
 	public function del($key) {
 		$key	= $this->getKey($key);
-		if ($this->mc) {
-			$this->mc->delete($key);
-		}
 		unset(static::$cache[$key]);
 	}
 
@@ -92,44 +65,14 @@ class Stache extends \Atwood\lib\oop\Singleton {
 			return static::$cache[$key];
 		}
 
-		if ($this->mc) {
-			$token	= null;
-			$data	= $this->mc->get($key, null, $token);
-			if ($token) {
-				return $data;
-			}
-		}
-
 		return null;
 	}
 
 	/**
-	 * truncates all local cache
+	 * truncates all cache
 	 * @static
 	 */
-	public static function truncateLocal() {
+	public static function truncate() {
 		static::$cache	= array();
-	}
-
-	/**
-	 * WARNING: Truncate all memcache data
-	 *
-	 * @static
-	 * @throws \RuntimeException		Can only be called in dev mode
-	 */
-	public static function truncateMemcached() {
-		if (!Env::mode('dev')) {
-			throw new \RuntimeException('Can not call Stache::truncate unless in dev mode');
-		}
-	}
-
-	/**
-	 * WARNING: Truncate all cache data
-	 * @static
-	 * @throws \RuntimeException		Can only be called in dev mode
-	 */
-	public static function truncateAll() {
-		self::truncateMemcached();
-		self::truncateLocal();
 	}
 }

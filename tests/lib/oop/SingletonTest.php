@@ -23,18 +23,36 @@ class SingletonTest extends \Atwood\lib\test\AtwoodTest {
 		$obj = SingletonMock::getInstance('foobar');
 		$this->assertNull($obj);
 
-		SingletonMock::setInstance(new SingletonMock(), 'foobar');
-		$this->assertEquals($obj, Singleton::getInstance('foobar'));
-		$this->assertEquals($obj, Singleton::getInstance());
-
-		$this->assertTrue(SingletonMock::hasInstance());
-		$this->assertTrue(SingletonMock::hasInstance('foobar'));
-
-		SingletonMock::clearInstance();
+		$obj = new SingletonMock();
+		SingletonMock::setInstance($obj, 'foobar');
+		$this->assertEquals($obj, SingletonMock::getInstance('foobar'));
+		$this->assertNull(SingletonMock::getInstance());
 		$this->assertFalse(SingletonMock::hasInstance());
+
+		SingletonMock::setInstance(new SingletonMock(), 'barbat');
+		$this->assertTrue(SingletonMock::hasInstance('barbat'));
+
 		$this->assertTrue(SingletonMock::hasInstance('foobar'));
 		SingletonMock::clearInstance('foobar');
 		$this->assertFalse(SingletonMock::hasInstance('foobar'));
+
+		$this->assertTrue(SingletonMock::hasInstance('barbat'));
+		Singleton::clearAllInstances();
+		$this->assertFalse(SingletonMock::hasInstance('barbat'));
+	}
+
+	public function testTruncateA() {
+		for ($i = 0; $i < 15; ++$i) {
+			SingletonMock::setInstance(new SingletonMock(), $i);
+		}
+		$this->assertEquals(15, count(SingletonMock::getAllInstances()));
+	}
+
+	/**
+	 * @depends testTruncateA
+	 */
+	public function testTruncateB() {
+		$this->assertEquals(0, count(SingletonMock::getAllInstances()));
 	}
 }
 

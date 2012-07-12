@@ -4,7 +4,7 @@ namespace Atwood\lib\fx;
 /**
  * Handles configuration switching
  */
-class Env extends \Atwood\lib\oop\Singleton {
+class Env extends \Atwood\lib\oop\GlobalSingleton {
 
 	/**
 	 * The name of this Env instance
