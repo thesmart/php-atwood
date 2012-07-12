@@ -15,7 +15,7 @@ class Stache extends \Atwood\lib\oop\GlobalSingleton {
 	 * The write-back static cache
 	 * @var array
 	 */
-	protected static $cache = array();
+	protected $cache = array();
 
 	/**
 	 * Get the namespace cache key
@@ -39,7 +39,7 @@ class Stache extends \Atwood\lib\oop\GlobalSingleton {
 	 */
 	public function set($key, $data) {
 		$key	= $this->getKey($key);
-		static::$cache[$key]	= $data;
+		$this->cache[$key]	= $data;
 	}
 
 	/**
@@ -50,7 +50,7 @@ class Stache extends \Atwood\lib\oop\GlobalSingleton {
 	 */
 	public function del($key) {
 		$key	= $this->getKey($key);
-		unset(static::$cache[$key]);
+		unset($this->cache[$key]);
 	}
 
 	/**
@@ -61,8 +61,8 @@ class Stache extends \Atwood\lib\oop\GlobalSingleton {
 	 */
 	public function get($key) {
 		$key	= $this->getKey($key);
-		if (array_key_exists($key, static::$cache)) {
-			return static::$cache[$key];
+		if (array_key_exists($key, $this->cache)) {
+			return $this->cache[$key];
 		}
 
 		return null;
@@ -73,6 +73,9 @@ class Stache extends \Atwood\lib\oop\GlobalSingleton {
 	 * @static
 	 */
 	public static function truncate() {
-		static::$cache	= array();
+		$allStaches		= static::getAllInstances();
+		foreach ($allStaches as /** @var Stache $stache */ $stache) {
+			$stache->cache	= array();
+		}
 	}
 }
