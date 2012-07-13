@@ -47,5 +47,9 @@ class MongoConnectionsTest extends \Atwood\lib\test\AtwoodTest {
 	public function testCol() {
 		$col	= MongoConnections::getCol('main', 'unitTest', true);
 		$this->assertInstanceOf('\\MongoCollection', $col);
+
+		// cache
+		$col	= MongoConnections::getCol('main', 'unitTest', true);
+		$this->assertInstanceOf('\\MongoCollection', $col);
 	}
 }

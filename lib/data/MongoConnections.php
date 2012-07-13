@@ -16,8 +16,10 @@ class MongoConnections {
 	const TIMEOUT = 3000;
 
 	protected static $mongo = array();
-	protected static $primary = array();
-	protected static $secondary = array();
+	protected static $primaryDbs = array();
+	protected static $secondaryDbs = array();
+	protected static $primaryCols = array();
+	protected static $secondaryCols = array();
 	protected static $namespace = '';
 
 	/**
@@ -90,9 +92,9 @@ class MongoConnections {
 			$realDbName .= '_' . self::$namespace;
 		}
 
-		$dbs = self::$primary;
+		$dbs =& self::$primaryDbs;
 		if ($isSlaveOk) {
-			$dbs = self::$secondary;
+			$dbs =& self::$secondaryDbs;
 		}
 
 		if (isset($dbs[$dbName])) {
@@ -102,11 +104,11 @@ class MongoConnections {
 		$mongo		= self::getMongo($dbName);
 
 		$dbP = $mongo->selectDB($realDbName);
-		self::$primary[$dbName] = $dbP;
+		self::$primaryDbs[$dbName] = $dbP;
 
 		$dbS = $mongo->selectDB($realDbName);
 		$dbS->setSlaveOkay(true);
-		self::$secondary[$dbName] = $dbS;
+		self::$secondaryDbs[$dbName] = $dbS;
 		
 		return self::getDb($dbName, $isSlaveOk);
 	}
@@ -121,8 +123,17 @@ class MongoConnections {
 	 * @return \MongoCollection
 	 */
 	public static function getCol($dbName, $collectionName, $isSlaveOk = false) {
+		$cols =& self::$primaryCols;
+		if ($isSlaveOk) {
+			$cols =& self::$secondaryCols;
+		}
+
+		if (isset($cols[$dbName][$collectionName])) {
+			return $cols[$dbName][$collectionName];
+		}
+
 		$db	= self::getDb($dbName, $isSlaveOk);
-		return $db->selectCollection($collectionName);
+		return $cols[$dbName][$collectionName] = $db->selectCollection($collectionName);
 	}
 
 	/**
