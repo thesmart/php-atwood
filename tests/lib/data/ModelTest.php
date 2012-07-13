@@ -74,6 +74,23 @@ class ModelTest extends \Atwood\lib\test\AtwoodTest {
 		$this->assertEquals(0, $count);
 	}
 
+	public function testUpdate() {
+		$model	= new MockModel(array(
+			'foo'	=> 'bar'
+		));
+
+		$status	= $model->save();
+		$this->assertTrue($status);
+
+		$status	= $model->update('bing', 'foo');
+		$this->assertTrue($status);
+
+		$model	= MockModel::readOne($model->id);
+		$this->assertNotNull($model);
+
+		$this->assertEquals('bing', $model->doc['foo']);
+	}
+
 	public function testDelete() {
 		$models	= array();
 		for ($i = 0; $i < 100; ++$i) {

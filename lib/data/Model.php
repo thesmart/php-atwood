@@ -39,6 +39,16 @@ abstract class Model {
 	}
 
 	/**
+	 * Init static properties
+	 * @static
+	 */
+	protected static final function getColName() {
+		$namespace	= get_called_class();
+		preg_match('/\\\([\\d\\w\\s]*)$/', $namespace, $matches);
+		return $matches[1];
+	}
+
+	/**
 	 * The base-line validation routine
 	 * @throws \Atwood\lib\fx\exception\ModelException
 	 */
@@ -47,6 +57,30 @@ abstract class Model {
 			throw new ModelException('$this->doc is empty');
 		}
 	}
+
+	/**
+	 * @param \MongoId|string $var
+	 * @return \MongoId
+	 */
+	protected static final function castIdToMongoId($var) {
+		if ($var instanceof \MongoId) {
+			return $var;
+		}
+
+		return new \MongoId($var);
+	}
+
+//	/**
+//	 * @param \MongoId|string
+//	 * @return string
+//	 */
+//	protected static final function castIdToString($var) {
+//		if ($var instanceof \MongoId) {
+//			return (string)$var;
+//		}
+//
+//		return $var;
+//	}
 
 	/**
 	 * Validate $this->doc
@@ -75,7 +109,7 @@ abstract class Model {
 	 * @return \MongoCollection
 	 */
 	public static function getCol($isSlaveOk = true) {
-		return MongoConnections::getCol(static::DB_NAME, get_called_class(), $isSlaveOk);
+		return MongoConnections::getCol(static::DB_NAME, static::getColName(), $isSlaveOk);
 	}
 
 	/**
@@ -107,8 +141,8 @@ abstract class Model {
 	 */
 	public static function readOne($value, $key = '_id') {
 		// turn string into \MongoId
-		if ($key === '_id' && !$value instanceof \MongoId) {
-			$value	= new \MongoId($value);
+		if ($key === '_id') {
+			$value	= static::castIdToMongoId($value);
 		}
 
 		// check DB
@@ -143,6 +177,27 @@ abstract class Model {
 		if (!empty($this->doc['_id'])) {
 			$this->id	= $this->doc['_id'];
 		}
+
+		return true;
+	}
+
+	/**
+	 * Update a value in the Model
+	 * @param string $value		The value to set
+	 * @param string $key		The key to modify
+	 * @return bool		Success
+	 */
+	public function update($value, $key) {
+		$col	= static::getCol(false);
+		$col->update(array('_id' => $this->id), array(':set' => array($key => $value)), array(
+			'safe'		=> true,
+			'multiple'	=> false,
+			'fsync'		=> false,
+			'upsert'	=> false
+		));
+
+		$field	=& Dotty::with($this->doc)->one($key)->result();
+		$field	= $value;
 
 		return true;
 	}
