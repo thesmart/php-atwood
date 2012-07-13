@@ -102,7 +102,7 @@ abstract class Model {
 	 *
 	 * @static
 	 * @param mixed $value		A value to search for as criterion
-	 * @param string $key		The key to search for as criterion (could be via dot-notation)
+	 * @param string $key		The key to search for as criterion
 	 * @return Model|null		A Model object on successful read from DB
 	 */
 	public static function readOne($value, $key = '_id') {
