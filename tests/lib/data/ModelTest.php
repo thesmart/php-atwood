@@ -20,7 +20,7 @@ class ModelTest extends \Atwood\lib\test\AtwoodTest {
 			'theKeys' => 'toHappiness'
 		));
 
-		$status = $mm->save();
+		$status = $mm->create();
 		$this->assertTrue($status, 'MockModel did not save');
 		$this->assertTrue($mm->wasValidated);
 	}
@@ -29,7 +29,7 @@ class ModelTest extends \Atwood\lib\test\AtwoodTest {
 		$mm		= new MockModel(array(
 			'theKeys' => 'toHappiness'
 		));
-		$mm->save();
+		$mm->create();
 
 		$this->assertNotNull($mm->id);
 
@@ -51,7 +51,7 @@ class ModelTest extends \Atwood\lib\test\AtwoodTest {
 	public function testReadMany() {
 		for ($i = 0; $i < 100; ++$i) {
 			$model	= new MockModel(array('i'=>$i));
-			$status	= $model->save();
+			$status	= $model->create();
 			$this->assertTrue($status);
 		}
 
@@ -79,7 +79,7 @@ class ModelTest extends \Atwood\lib\test\AtwoodTest {
 			'foo'	=> 'bar'
 		));
 
-		$status	= $model->save();
+		$status	= $model->create();
 		$this->assertTrue($status);
 
 		$status	= $model->update('bing', 'foo');
@@ -95,7 +95,7 @@ class ModelTest extends \Atwood\lib\test\AtwoodTest {
 		$models	= array();
 		for ($i = 0; $i < 100; ++$i) {
 			$model	= new MockModel(array('i'=>$i));
-			$status	= $model->save();
+			$status	= $model->create();
 			$this->assertTrue($status);
 
 			$models[]	= $model;
@@ -118,7 +118,7 @@ class ModelTest extends \Atwood\lib\test\AtwoodTest {
 		$model->delete();
 
 		$this->setExpectedException('\Atwood\lib\fx\exception\ModelException');
-		$model->save();
+		$model->create();
 	}
 
 	public function testUpdateNonExist() {
@@ -132,8 +132,8 @@ class ModelTest extends \Atwood\lib\test\AtwoodTest {
 		$this->setExpectedException('\Atwood\lib\fx\exception\ModelException');
 
 		$model	= new MockModel(array('foo' => 'bar'));
-		$model->save();
-		$model->save();
+		$model->create();
+		$model->create();
 	}
 }
 

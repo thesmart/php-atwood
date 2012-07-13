@@ -144,13 +144,13 @@ abstract class Model {
 	}
 
 	/**
-	 * Save
-	 * @return bool		True if passes validation and insert was attempted
-	 * @throw \MongoCursorException
-	 * @throw ModelException
+	 * Create the model in the database.
 	 *
+	 * @return bool True if passes validation and insert was attempted
+	 * @throws \MongoCursorException
+	 * @throws \Atwood\lib\fx\exception\ModelException
 	 */
-	public function save() {
+	public function create() {
 		if ($this->id) {
 			throw new ModelException('Unable to create model that IS already in the DB');
 		}
