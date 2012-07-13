@@ -14,8 +14,6 @@ use \Monolog\Logger;
 abstract class Model {
 
 	const DB_NAME = 'main';
-	const CACHE_INSTANCE = 'model';
-	const CACHE_EXPIRES_IN = 600; // 10-minutes
 
 	/**
 	 * Primary key from the database
