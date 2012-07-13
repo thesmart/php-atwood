@@ -2,11 +2,11 @@
 namespace Atwood\lib\data;
 
 use \Atwood\lib\data\MongoConnections;
-use Atwood\lib\fx\exception\ModelException;
+use \Atwood\lib\fx\exception\ModelException;
 use \Atwood\lib\fx\Env;
 use \Atwood\lib\data\Stache;
 use \dotty\Dotty;
-use Monolog\Logger;
+use \Monolog\Logger;
 
 /**
  * A base class for all Models in Atwood.
@@ -16,24 +16,6 @@ abstract class Model {
 	const DB_NAME = 'main';
 	const CACHE_INSTANCE = 'model';
 	const CACHE_EXPIRES_IN = 600; // 10-minutes
-
-	/**
-	 * The log for all Models of this type
-	 * @var Logger
-	 */
-	protected static $log;
-
-	/**
-	 * A collection of Stache objects, keyed by unique-index field names
-	 * @var array.<string, Stache>
-	 */
-	protected static $staches;
-
-	/**
-	 * The keys in $this->doc that have unique-key constraints in the database.
-	 * @var array
-	 */
-	protected static $uniqueFields = array('_id');
 
 	/**
 	 * Primary key from the database
@@ -54,61 +36,6 @@ abstract class Model {
 		} else {
 			unset($this->doc['_id']);
 		}
-
-		static::init();
-	}
-
-//	/**
-//	 * Save $this->doc to cache
-//	 */
-//	protected function saveToCache() {
-//		if (!$this->id) {
-//			// if not in the DB, do not cache
-//			return;
-//		}
-//
-//		// cache $this->doc by each unique field
-//		// this is done because unique fields are usually the fields accessed most for reads
-//		foreach (static::$uniqueFields as $uniqueFieldName) {
-//			if (isset($this->doc[$uniqueFieldName])) {
-//				$className	= get_called_class();
-//				$cacheKey	= "{$className}::{$uniqueFieldName}::{$this->doc[$uniqueFieldName]}";
-//				static::$cache->set($cacheKey, $this->doc, static::CACHE_EXPIRES_IN);
-//			}
-//		}
-//	}gmail
-//
-//	/**
-//	 * Construct an instance of this Model from cache
-//	 * @static
-//	 * @param string $uniqueFieldName		The name a uniquely constrained field (e.g. _id or email_address)
-//	 * @param mixed $uniqueFieldValue		A value that can be cast to a string
-//	 * @return Model|null			Null if not found in cache
-//	 */
-//	protected static function readFromCache($uniqueFieldName, $uniqueFieldValue) {
-//		$className	= get_called_class();
-//		$cacheKey	= "{$className}::{$uniqueFieldName}::{$uniqueFieldValue}";
-//		$doc		= static::$cache->get($cacheKey);
-//		if (!$doc instanceof static) {
-//			return null;
-//		}
-//		return new static($doc);
-//	}
-
-	/**
-	 * Init static properties once
-	 * @static
-	 */
-	private static function init() {
-		if (static::$staches) {
-			// run once
-			return;
-		}
-
-		foreach (static::$uniqueFields as $fieldName) {
-			static::$staches[$fieldName]	= new Stache();
-		}
-		static::$log	= getLogger(get_called_class());
 	}
 
 	/**
@@ -175,7 +102,7 @@ abstract class Model {
 	 *
 	 * @static
 	 * @param mixed $value		A value to search for as criterion
-	 * @param string $key		The key to search for as criterion
+	 * @param string $key		The key to search for as criterion (could be via dot-notation)
 	 * @return Model|null		A Model object on successful read from DB
 	 */
 	public static function readOne($value, $key = '_id') {
