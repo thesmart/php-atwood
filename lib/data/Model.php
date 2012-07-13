@@ -68,18 +68,6 @@ abstract class Model {
 		return new \MongoId($var);
 	}
 
-//	/**
-//	 * @param \MongoId|string
-//	 * @return string
-//	 */
-//	protected static final function castIdToString($var) {
-//		if ($var instanceof \MongoId) {
-//			return (string)$var;
-//		}
-//
-//		return $var;
-//	}
-
 	/**
 	 * Validate $this->doc
 	 * @abstract
@@ -163,11 +151,13 @@ abstract class Model {
 	 *
 	 */
 	public function save() {
-		$col = static::getCol(false);
-
+		if ($this->id) {
+			throw new ModelException('Unable to create model that IS already in the DB');
+		}
 		$this->baseValidate();
 		$this->validate();
 
+		$col = static::getCol(false);
 		$col->save($this->doc, array(
 			'safe'	=> true
 		));
@@ -186,6 +176,11 @@ abstract class Model {
 	 * @return bool		Success
 	 */
 	public function update($value, $key) {
+		if (!$this->id) {
+			throw new ModelException('Unable to update model that is NOT already in the DB');
+		}
+		$this->baseValidate();
+
 		$col	= static::getCol(false);
 		$col->update(array('_id' => $this->id), array(':set' => array($key => $value)), array(
 			'safe'		=> true,

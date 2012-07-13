@@ -113,11 +113,26 @@ class ModelTest extends \Atwood\lib\test\AtwoodTest {
 		$this->assertEquals(44, $count);
 	}
 
-	public function testEdgeCases() {
+	public function testSaveDeleted() {
 		$model	= new MockModel();
 		$model->delete();
 
 		$this->setExpectedException('\Atwood\lib\fx\exception\ModelException');
+		$model->save();
+	}
+
+	public function testUpdateNonExist() {
+		$this->setExpectedException('\Atwood\lib\fx\exception\ModelException');
+
+		$model	= new MockModel(array('foo' => 'bar'));
+		$model->update('foo', 'bat');
+	}
+
+	public function testCreateExisting() {
+		$this->setExpectedException('\Atwood\lib\fx\exception\ModelException');
+
+		$model	= new MockModel(array('foo' => 'bar'));
+		$model->save();
 		$model->save();
 	}
 }
