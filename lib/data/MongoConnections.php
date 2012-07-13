@@ -81,7 +81,6 @@ class MongoConnections {
 	 *
 	 * @param string $dbName			The database / connection name
 	 * @param bool $isSlaveOk			Is this connection ok to wait on slave?
-	 * @param string $namespace			The namespace to segment the DB by.
 	 * @return \MongoDB
 	 *
 	 * @static
