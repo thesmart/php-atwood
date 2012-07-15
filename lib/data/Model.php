@@ -69,14 +69,6 @@ abstract class Model {
 	}
 
 	/**
-	 * Validate $this->doc
-	 * @abstract
-	 * @return string|bool			True if success. Error string if failed.
-	 * @throws \Atwood\lib\fx\exception\ModelException
-	 */
-	public abstract function validate();
-
-	/**
 	 * Get the MongoDB object that backs this Descriptor
 	 *
 	 * @static
@@ -155,7 +147,6 @@ abstract class Model {
 			throw new ModelException('Unable to create model that IS already in the DB');
 		}
 		$this->baseValidate();
-		$this->validate();
 
 		$col = static::getCol(false);
 		$col->save($this->doc, array(
@@ -174,6 +165,9 @@ abstract class Model {
 	 * @param string $value		The value to set
 	 * @param string $key		The key to modify
 	 * @return bool		Success
+	 *
+	 * @throws \MongoCursorException
+	 * @throws \Atwood\lib\fx\exception\ModelException
 	 */
 	public function update($value, $key) {
 		if (!$this->id) {

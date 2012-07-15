@@ -22,7 +22,6 @@ class ModelTest extends \Atwood\lib\test\AtwoodTest {
 
 		$status = $mm->create();
 		$this->assertTrue($status, 'MockModel did not save');
-		$this->assertTrue($mm->wasValidated);
 	}
 
 	public function testReadOne() {
@@ -138,10 +137,4 @@ class ModelTest extends \Atwood\lib\test\AtwoodTest {
 }
 
 class MockModel extends Model {
-	public $wasValidated	= false;
-
-	public function validate() {
-		$this->wasValidated = true;
-		return !empty($this->doc['theKeys']);
-	}
 }
