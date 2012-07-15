@@ -1,9 +1,9 @@
 <?php
 
-namespace Atwood\tests\lib\data;
+namespace Atwood\tests\lib\fx\models;
 
 use Atwood\lib\data\Stache;
-use Atwood\lib\data\Model;
+use Atwood\lib\fx\models\Model;
 
 class ModelTest extends \Atwood\lib\test\AtwoodTest {
 

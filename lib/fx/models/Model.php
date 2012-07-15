@@ -1,5 +1,5 @@
 <?php
-namespace Atwood\lib\data;
+namespace Atwood\lib\fx\models;
 
 use \Atwood\lib\data\MongoConnections;
 use \Atwood\lib\fx\exception\ModelException;
