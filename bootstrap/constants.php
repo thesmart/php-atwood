@@ -52,3 +52,33 @@ define('PATH_ACTION', PATH_ROOT . 'views/actions/');
  * Elements folder
  */
 define('PATH_ELEMENTS', PATH_ROOT . 'views/elements/');
+
+/**
+ * Get the name of a class
+ * @param string $calledClass
+ * @return string
+ */
+function classNameFromPath($calledClass) {
+	preg_match('/^.*\\\(.+)$/', $calledClass, $matches);
+	return $matches[1];
+}
+
+/**
+ * Flip all slashes forward
+ * e.g. \this\is\a\path --> /this/is/a/path
+ * @param $path
+ * @return string
+ */
+function slashesFlipForward($path) {
+	return preg_replace('#\\\#', '/', $path);
+}
+
+/**
+ * Flip all slashes backward
+ * e.g. /this/is/a/path --> \this\is\a\path
+ * @param $path
+ * @return string
+ */
+function slashesFlipBackward($path) {
+	return preg_replace('#/#', '\\', $path);
+}

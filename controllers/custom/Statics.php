@@ -1,6 +1,6 @@
 <?php
 
-namespace Atwood\controllers;
+namespace Atwood\controllers\custom;
 
 use \Atwood\lib\fx\HttpRequest;
 use \Atwood\lib\fx\HttpResponse;

@@ -53,6 +53,11 @@ class HttpRequest {
 	/**
 	 * @var array
 	 */
+	public $cookie;
+
+	/**
+	 * @var array
+	 */
 	public $data;
 
 	/**
@@ -76,6 +81,7 @@ class HttpRequest {
 		$this->get		= $_GET;
 		$this->post		= $_POST;
 		$this->put		= array();
+		$this->cookie	= $_COOKIE;
 
 		if ($this->method === HttpRequest::METHOD_PUT) {
 			if (function_exists('mb_parse_str')) {
@@ -83,11 +89,11 @@ class HttpRequest {
 			} else {
 				parse_str(file_get_contents('php://input'), $this->put);
 			}
-			$this->data		= $this->put + $_GET;
+			$this->data		= $this->put + $_GET + $_COOKIE;
 		} else if ($this->method === HttpRequest::METHOD_POST) {
-			$this->data		= $_POST + $_GET;
+			$this->data		= $_POST + $_GET + $_COOKIE;
 		} else {
-			$this->data		= $_GET;
+			$this->data		= $_GET + $_COOKIE;
 		}
 	}
 

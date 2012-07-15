@@ -15,16 +15,20 @@ $atWood->mapHtml('/')->setClosure(function(HttpController $controller) {
 })->setView('Landing/start');
 
 /***********************************
- * Dynamic helpers
+ * RESTful API
  **********************************/
 
-if (Env::mode('dev')) {
-	// only enable these routes when the environment is in developer mode
-	$atWood->map('/less/:fileName', 'Statics', 'less');
+//$atWood->mapApi('/session/:id', 'Session');
 
-	// only enable these routes when the environment is in developer mode
-	$atWood->map('/coffee/:fileName', 'Statics', 'coffee');
-}
+/***********************************
+ * Dynamic css and javascript helpers
+ **********************************/
+
+// only enable these routes when the environment is in developer mode
+$atWood->map('/less/:fileName', 'custom/Statics', 'less');
+
+// only enable these routes when the environment is in developer mode
+$atWood->map('/coffee/:fileName', 'custom/Statics', 'coffee');
 
 /***********************************
  * Unit tests
@@ -33,6 +37,6 @@ if (Env::mode('dev')) {
 if (Env::mode('dev')) {
 	// only enable these routes when the environment is in developer mode
 	Atwood::setDefaultLayout('tests');
-	$atWood->map('/tests', 'UnitTest', 'listTests');
-	$atWood->map('/tests/:ns_0/(:ns_1(/:ns_2(/:ns_3(/:ns_4(/:ns_5(/:ns_6(/:ns_7)))))))', 'UnitTest', 'runTest');
+	$atWood->mapHtml('/tests', 'UnitTest', 'listTests');
+	$atWood->mapHtml('/tests/:ns_0/(:ns_1(/:ns_2(/:ns_3(/:ns_4(/:ns_5(/:ns_6(/:ns_7)))))))', 'UnitTest', 'runTest');
 }

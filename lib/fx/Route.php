@@ -242,6 +242,7 @@ class Route {
 		if ($controllerName === self::CONTROLLER_TYPE_HTML || $controllerName === self::CONTROLLER_TYPE_API) {
 			$this->controllerClass	= $controllerName;
 		} else {
+			$controllerName			= slashesFlipBackward($controllerName);
 			$this->controllerClass	= "Atwood\\controllers\\{$controllerName}";
 		}
 
@@ -279,16 +280,19 @@ class Route {
 		$controller		= $controllerRef->newInstance($request, $response);
 
 		$methodRef		= null;
-		if ($this->controllerMethod) {
-			// security check the Action method
-			if (!$controllerRef->hasMethod($this->controllerMethod)) {
-				throw new \RuntimeException(sprintf('Route "%s" specifies invalid Action "%s" for Controller "%s".', $this->pattern, $this->controllerMethod, $this->controllerClass));
-			}
+		if (!$this->controllerMethod) {
+			// default controller method to action_get, action_post, action_put, or action_delete
+			$this->controllerMethod		= "action_{$request->method}";
+		}
 
-			$methodRef			= new \ReflectionMethod($controller, $this->controllerMethod);
-			if (!$methodRef->isPublic()) {
-				throw new \RuntimeException(sprintf('Route "%s" specifies non-public Action "%s" for Controller "%s".', $this->pattern, $this->controllerMethod, $this->controllerClass));
-			}
+		// security check the Action method
+		if (!$controllerRef->hasMethod($this->controllerMethod)) {
+			throw new \RuntimeException(sprintf('Route "%s" specifies invalid Action "%s" for Controller "%s".', $this->pattern, $this->controllerMethod, $this->controllerClass));
+		}
+
+		$methodRef			= new \ReflectionMethod($controller, $this->controllerMethod);
+		if (!$methodRef->isPublic()) {
+			throw new \RuntimeException(sprintf('Route "%s" specifies non-public Action "%s" for Controller "%s".', $this->pattern, $this->controllerMethod, $this->controllerClass));
 		}
 
 		// set parameters derived from the route

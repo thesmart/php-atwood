@@ -1,6 +1,6 @@
 <?php
 
-namespace Atwood\controllers;
+namespace Atwood\controllers\html;
 
 use \Monolog\Logger;
 use \Atwood\lib\fx\Env;
