@@ -89,17 +89,6 @@ class Atwood {
 	}
 
 	/**
-	 * Map an ApiController to a path
-	 * @param string $pattern
-	 * @return fx\Route
-	 */
-	public function mapClosure($pattern) {
-		$route = new Route($pattern);
-		$this->routes[]	= $route;
-		return $route;
-	}
-
-	/**
 	 * Dispatch the request by constructing a Controller and invoking its Action
 	 */
 	public function dispatch() {
@@ -108,7 +97,7 @@ class Atwood {
 
 		$path			= $this->request->url->pathRelative();
 		foreach ($this->routes as /** @var Route $route */ $route) {
-			if ($route->matches($path)) {
+			if ($route->matches($path, $this->request->method)) {
 				$matchedRoute	= $route;
 				break;
 			}

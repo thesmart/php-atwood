@@ -9,6 +9,10 @@ use Atwood\lib\Atwood;
 use Atwood\lib\fx\controllers\HttpController;
 
 $atWood	= new Atwood();
+$atWood->setDefaultConditions(array(
+	'id' => '[0-9a-fA-F]{24}',
+	'key' => '[0-9a-fA-F]{48}',
+));
 
 $atWood->mapHtml('/')->setClosure(function(HttpController $controller) {
 	$controller->setData(array('msg' => 'Hello World!'));
@@ -18,7 +22,9 @@ $atWood->mapHtml('/')->setClosure(function(HttpController $controller) {
  * RESTful API
  **********************************/
 
-//$atWood->mapApi('/session/:id', 'Session');
+$atWood->mapApi('/session/:key', 'SessionApi')->via('get', 'delete');
+
+$atWood->mapApi('/session/create', 'SessionApi')->via('post');
 
 /***********************************
  * Dynamic css and javascript helpers

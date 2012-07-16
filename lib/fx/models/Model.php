@@ -183,7 +183,7 @@ abstract class Model {
 			'upsert'	=> false
 		));
 
-		$field	=& Dotty::with($this->doc)->one($key)->result();
+		$field	=& Dotty::with($this->doc)->ensure($key)->result();
 		$field	= $value;
 
 		return true;

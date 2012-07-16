@@ -3,6 +3,7 @@ namespace Atwood\lib\fx\controllers;
 
 use Atwood\lib\fx\HttpRequest;
 use Atwood\lib\fx\HttpResponse;
+use Atwood\lib\fx\exception\ApiException;
 
 class ApiController extends HttpController {
 
@@ -17,15 +18,13 @@ class ApiController extends HttpController {
 	 */
 	public function getData() {
 		return array(
-			'status'	=> 1,
 			'data'		=> $this->data,
-			'session'	=> null
+			'session'	=> $this->session ? $this->session->toApi() : null
 		);
 	}
 
 	/**
 	 * Render the output representation of this Controller
-	 * @param array $route			The route currently being dispatched
 	 * @return string				the json
 	 */
 	public function render() {

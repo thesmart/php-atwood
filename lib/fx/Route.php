@@ -279,7 +279,6 @@ class Route {
 		/** @var \Atwood\lib\fx\controllers\Controller $controller */
 		$controller		= $controllerRef->newInstance($request, $response);
 
-		$methodRef		= null;
 		if (!$this->controllerMethod) {
 			// default controller method to action_get, action_post, action_put, or action_delete
 			$this->controllerMethod		= "action_{$request->method}";
@@ -384,10 +383,16 @@ class Route {
 	 *
 	 * http://blog.sosedoff.com/2009/09/20/rails-like-php-url-router/
 	 *
-	 * @param   string  $resourceUri A Request URI
+	 * @param string  $resourceUri A Request URI
+	 * @param string  $method The http method (i.e. get, post, put, or delete)
 	 * @return  bool
 	 */
-	public function matches($resourceUri) {
+	public function matches($resourceUri, $method) {
+		// test method
+		if (!$this->supportsHttpMethod($method)) {
+			return false;
+		}
+
 		//Extract URL params
 		preg_match_all('@:([\w]+)|\*@', $this->pattern, $paramNames, PREG_PATTERN_ORDER);
 		$paramNames = $paramNames[0];
